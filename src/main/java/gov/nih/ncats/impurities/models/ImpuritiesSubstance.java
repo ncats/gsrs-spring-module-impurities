@@ -1,5 +1,6 @@
 package gov.nih.ncats.impurities.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import gsrs.GsrsEntityProcessorListener;
 import gsrs.model.AbstractGsrsEntity;
 import gsrs.model.AbstractGsrsManualDirtyEntity;
@@ -18,20 +19,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Version;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.List;
@@ -99,4 +87,15 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
     @OneToMany(cascade = CascadeType.ALL)
     public List<ImpuritiesInorganic> impuritiesInorganicList = new ArrayList<ImpuritiesInorganic>();
 
+    @Transient
+    @JsonProperty("_substanceKey")
+    public String _substanceKey;
+
+    @Transient
+    @JsonProperty("_approvalID")
+    public String _approvalID;
+
+    @Transient
+    @JsonProperty("_name")
+    public String _name;
 }

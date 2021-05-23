@@ -1,5 +1,6 @@
 package gov.nih.ncats.impurities.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import gsrs.GsrsEntityProcessorListener;
 import gsrs.model.AbstractGsrsEntity;
 import gsrs.model.AbstractGsrsManualDirtyEntity;
@@ -110,7 +111,20 @@ public class Impurities extends AbstractGsrsEntity {
     public ImpuritiesTotal impuritiesTotal;
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
+    @JsonIgnore
+    @Indexable(facet=true, name="Deprecated")
+    public String getDeprecated(){
+        return "Not Deprecated";
+    }
+
+    @Transient
+    @JsonProperty("_approvalID")
+    public String _approvalID;
+
+    @Transient
+    @JsonProperty("_name")
+    public String _name;
 }

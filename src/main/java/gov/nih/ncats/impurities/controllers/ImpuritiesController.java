@@ -140,59 +140,30 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
         try {
             if (impurities.isPresent()) {
 
-                /*
-                if (application.get().applicationProductList.size() > 0) {
-                    for (int j = 0; j < application.get().applicationProductList.size(); j++) {
-                        ApplicationProduct prod = application.get().applicationProductList.get(j);
-                        if (prod != null) {
+                if (impurities.get().impuritiesSubstanceList.size() > 0) {
+                    for (int j = 0; j < impurities.get().impuritiesSubstanceList.size(); j++) {
+                        ImpuritiesSubstance impSub = impurities.get().impuritiesSubstanceList.get(j);
+                        if (impSub != null) {
+                            if (impSub.substanceUuid != null) {
 
-                            if (prod.applicationIngredientList.size() > 0) {
-                                for (int i = 0; i < prod.applicationIngredientList.size(); i++) {
-                                    ApplicationIngredient ingred = prod.applicationIngredientList.get(i);
-                                    if (ingred != null) {
-                                        if (ingred.substanceKey != null) {
+                                // ********* Get Substance Module/Details by Substance Code ***********
+                                // Using this for local Substance Module:  0017298AA
+                                // Use this for NCAT FDA URL API:   0126085AB
+                                ResponseEntity<String> response = this.substanceModuleService.getSubstanceDetailsFromSubstanceKey(impSub.substanceUuid);
 
-                                            // ********* Get Substance Module/Details by Substance Code ***********
-                                            // Using this for local Substance Module:  0017298AA
-                                            // Use this for NCAT FDA URL API:   0126085AB
-                                            ResponseEntity<String> response = this.substanceModuleService.getSubstanceDetailsFromSubstanceKey(ingred.substanceKey);
+                                String jsonString = response.getBody();
+                                if (jsonString != null) {
+                                    ObjectMapper mapper = new ObjectMapper();
+                                    JsonNode actualObj = mapper.readTree(jsonString);
 
-                                            String jsonString = response.getBody();
-                                            if (jsonString != null) {
-                                                ObjectMapper mapper = new ObjectMapper();
-                                                JsonNode actualObj = mapper.readTree(jsonString);
-
-                                                ingred._substanceUuid = actualObj.path("uuid").textValue();
-                                                ingred._approvalID = actualObj.path("approvalID").textValue();
-                                                ingred._name = actualObj.path("_name").textValue();
-                                            }
-                                        }
-
-                                        if (ingred.basisOfStrengthSubstanceKey != null) {
-
-                                            // ********** Get Substance Module/Details by Basis of Strength by Substance Code **********
-                                            // Optional<Substance> objSub = this.substanceModuleService.getSubstanceDetails("0017298AA");
-
-                                            ResponseEntity<String> response = this.substanceModuleService.getSubstanceDetailsFromSubstanceKey(ingred.basisOfStrengthSubstanceKey);
-
-                                            String jsonString = response.getBody();
-                                            if (jsonString != null) {
-                                                ObjectMapper mapper = new ObjectMapper();
-                                                JsonNode actualObj = mapper.readTree(jsonString);
-
-                                                ingred._basisOfStrengthSubstanceUuid = actualObj.path("uuid").textValue();
-                                                ingred._basisOfStrengthApprovalID = actualObj.path("approvalID").textValue();
-                                                ingred._basisOfStrengthName = actualObj.path("_name").textValue();
-                                            }
-                                        }
-
-                                    }
+                                 //   impSub._approvalID = actualObj.path("uuid").textValue();
+                                    impSub._approvalID = actualObj.path("approvalID").textValue();
+                                    impSub._name = actualObj.path("_name").textValue();
                                 }
                             }
                         }
                     }
                 }
-                 */
             }
         } catch (Exception ex) {
             ex.printStackTrace();

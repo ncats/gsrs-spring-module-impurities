@@ -15,7 +15,7 @@ import java.util.Optional;
 public class ImpuritiesProcessor implements EntityProcessor<Impurities> {
 
     @Autowired
-    public ImpuritiesController applicationController;
+    public ImpuritiesController impuritiesController;
 
     @Override
     public Class<Impurities> getEntityClass() {
@@ -36,6 +36,13 @@ public class ImpuritiesProcessor implements EntityProcessor<Impurities> {
 
     @Override
     public void postLoad(Impurities obj) throws FailProcessingException {
+        if(impuritiesController==null) {
+            AutowireHelper.getInstance().autowire(this);
+        }
+
+        if (impuritiesController != null) {
+            Optional<Impurities> objInjectSubstance = impuritiesController.injectSubstanceDetails(Optional.of(obj));
+        }
     }
 
 }
