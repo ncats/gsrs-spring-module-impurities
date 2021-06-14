@@ -36,6 +36,7 @@ public class ImpuritiesProcessor implements EntityProcessor<Impurities> {
 
     @Override
     public void postLoad(Impurities obj) throws FailProcessingException {
+        /*
         if(impuritiesController==null) {
             AutowireHelper.getInstance().autowire(this);
         }
@@ -43,6 +44,7 @@ public class ImpuritiesProcessor implements EntityProcessor<Impurities> {
         if (impuritiesController != null) {
             Optional<Impurities> objInjectSubstance = impuritiesController.injectSubstanceDetails(Optional.of(obj));
         }
+         */
     }
 
 }

@@ -87,6 +87,7 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
     @OneToMany(cascade = CascadeType.ALL)
     public List<ImpuritiesInorganic> impuritiesInorganicList = new ArrayList<ImpuritiesInorganic>();
 
+    /*
     @Transient
     @JsonProperty("_substanceKey")
     public String _substanceKey;
@@ -98,4 +99,5 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
     @Transient
     @JsonProperty("_name")
     public String _name;
+    */
 }

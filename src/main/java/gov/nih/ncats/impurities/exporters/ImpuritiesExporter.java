@@ -1,9 +1,13 @@
 package gov.nih.ncats.impurities.exporters;
 
+import gov.nih.ncats.impurities.controllers.ImpuritiesController;
 import gov.nih.ncats.impurities.models.*;
 
 // import ix.gsrs.substance.exporters.FDACodeExporter;
 import ix.ginas.exporters.*;
+import gsrs.springUtils.AutowireHelper;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.*;
@@ -25,6 +29,9 @@ enum ImpDefaultColumns implements Column {
 
 public class ImpuritiesExporter implements Exporter<Impurities> {
 
+    @Autowired
+    public static ImpuritiesController impuritiesController;
+
     private final Spreadsheet spreadsheet;
 
     private int row=1;
@@ -32,6 +39,10 @@ public class ImpuritiesExporter implements Exporter<Impurities> {
     private final List<ColumnValueRecipe<Impurities>> recipeMap;
 
     private ImpuritiesExporter(Builder builder){
+
+        if(impuritiesController==null) {
+            AutowireHelper.getInstance().autowire(this);
+        }
 
         this.spreadsheet = builder.spreadsheet;
         this.recipeMap = builder.columns;
@@ -144,6 +155,9 @@ public class ImpuritiesExporter implements Exporter<Impurities> {
         StringBuilder sb = new StringBuilder();
 
         try {
+
+         //   Optional<Impurities> imp = impuritiesController.injectSubstanceDetails(Optional.of(s));
+
             if (s.impuritiesSubstanceList.size() > 0) {
                 List<ImpuritiesSubstance> subList = s.impuritiesSubstanceList;
 
@@ -157,14 +171,14 @@ public class ImpuritiesExporter implements Exporter<Impurities> {
                             switch (fieldName) {
                                 case SUBSTANCE_NAME:
                                     if (sList != null) {
-                                        sb.append((sList._name != null) ? sList._name : "(No Ingredient Name)");
+                                    //    sb.append((sList._name != null) ? sList._name : "(No Ingredient Name)");
                                     } else {
                                         sb.append("(No Ingredient Name)");
                                     }
                                     break;
                                 case APPROVAL_ID:
                                     if (sList != null) {
-                                        sb.append((sList._approvalID != null) ? sList._approvalID : "(No Unii)");
+                                    //    sb.append((sList._approvalID != null) ? sList._approvalID : "(No Unii)");
                                     } else {
                                         sb.append("(No Unii)");
                                     }

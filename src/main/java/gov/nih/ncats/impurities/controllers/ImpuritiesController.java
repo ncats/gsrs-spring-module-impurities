@@ -156,9 +156,10 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
                                     ObjectMapper mapper = new ObjectMapper();
                                     JsonNode actualObj = mapper.readTree(jsonString);
 
+                                    System.out.println(("*************** " + actualObj.path("uuid").textValue()));
                                  //   impSub._approvalID = actualObj.path("uuid").textValue();
-                                    impSub._approvalID = actualObj.path("approvalID").textValue();
-                                    impSub._name = actualObj.path("_name").textValue();
+                                  //  impSub._approvalID = actualObj.path("approvalID").textValue();
+                                  //  impSub._name = actualObj.path("_name").textValue();
                                 }
                             }
                         }

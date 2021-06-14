@@ -120,6 +120,7 @@ public class Impurities extends AbstractGsrsEntity {
         return "Not Deprecated";
     }
 
+    /*
     @Transient
     @JsonProperty("_approvalID")
     public String _approvalID;
@@ -127,4 +128,5 @@ public class Impurities extends AbstractGsrsEntity {
     @Transient
     @JsonProperty("_name")
     public String _name;
+     */
 }
