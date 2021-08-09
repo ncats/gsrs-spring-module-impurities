@@ -21,6 +21,7 @@ import ix.ginas.exporters.Exporter;
 import ix.ginas.exporters.ExporterFactory;
 import ix.ginas.models.v1.Substance;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.hateoas.server.ExposesResourceFor;
@@ -96,33 +97,36 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
         return stream;
     }
 
-    public ResponseEntity<Object> createExport(@PathVariable("etagId") String etagId, @PathVariable("format") String format, @RequestParam(value = "publicOnly", required = false) Boolean publicOnlyObj, @RequestParam(value = "filename", required = false) String fileName, Principal prof, @RequestParam Map<String, String> parameters) throws Exception {
+    @PreAuthorize("isAuthenticated()")
+    @GetGsrsRestApiMapping("/export/{etagId}/{format}")
+    public ResponseEntity<Object> createExport(@PathVariable("etagId") String etagId, @PathVariable("format") String format,
+                                               @RequestParam(value = "publicOnly", required = false) Boolean publicOnlyObj, @RequestParam(value ="filename", required= false) String fileName,
+                                               Principal prof,
+                                               @RequestParam Map<String, String> parameters) throws Exception {
+        Optional<ETag> etagObj = eTagRepository.findByEtag(etagId);
 
-        Optional<ETag> etagObj = this.eTagRepository.findByEtag(etagId);
-        boolean publicOnly = publicOnlyObj == null ? true : publicOnlyObj;
+        boolean publicOnly = publicOnlyObj==null? true: publicOnlyObj;
+
         if (!etagObj.isPresent()) {
-            return new ResponseEntity("could not find etag with Id " + etagId, this.gsrsControllerConfiguration.getHttpStatusFor(HttpStatus.BAD_REQUEST, parameters));
-        } else {
-            ExportMetaData emd = new ExportMetaData(etagId, ((ETag) etagObj.get()).uri, "admin", publicOnly, format);
-            Stream<Impurities> mstream = (Stream) (new EtagExportGenerator(this.entityManager)).generateExportFrom("application", (ETag) etagObj.get()).get();
-            Stream<Impurities> effectivelyFinalStream = this.filterStream(mstream, publicOnly, parameters);
-
-            if (fileName != null) {
-                emd.setDisplayFilename(fileName);
-                System.out.println("FILE NAME: " + fileName);
-            }
-
-            ExportProcess<Impurities> p = this.exportService.createExport(emd, () -> {
-                return effectivelyFinalStream;
-            });
-            p.run(this.taskExecutor, (out) -> {
-                return (Exporter) Unchecked.uncheck(() -> {
-
-                    return this.getExporterFor(format, out, publicOnly, parameters);
-                });
-            });
-            return new ResponseEntity(p.getMetaData(), HttpStatus.OK);
+            return new ResponseEntity<>("could not find etag with Id " + etagId,gsrsControllerConfiguration.getHttpStatusFor(HttpStatus.BAD_REQUEST, parameters));
         }
+
+        ExportMetaData emd=new ExportMetaData(etagId, etagObj.get().uri, prof.getName(), publicOnly, format);
+
+        Stream<Impurities> mstream = new EtagExportGenerator<Impurities>(entityManager, transactionManager).generateExportFrom(getEntityService().getContext(), etagObj.get()).get();
+
+        Stream<Impurities> effectivelyFinalStream = filterStream(mstream, publicOnly, parameters);
+
+        if(fileName!=null){
+            emd.setDisplayFilename(fileName);
+        }
+
+        ExportProcess<Impurities> p = exportService.createExport(emd,
+                () -> effectivelyFinalStream);
+
+        p.run(taskExecutor, out -> Unchecked.uncheck(() -> getExporterFor(format, out, publicOnly, parameters)));
+
+        return new ResponseEntity<>(GsrsControllerUtil.enhanceWithView(p.getMetaData(), parameters), HttpStatus.OK);
     }
 
     private Exporter<Impurities> getExporterFor(String extension, OutputStream pos, boolean publicOnly, Map<String, String> parameters) throws IOException {
