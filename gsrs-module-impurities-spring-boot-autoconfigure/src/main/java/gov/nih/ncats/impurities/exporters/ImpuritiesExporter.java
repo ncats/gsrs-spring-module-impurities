@@ -158,6 +158,7 @@ public class ImpuritiesExporter implements Exporter<Impurities> {
 
          //   Optional<Impurities> imp = impuritiesController.injectSubstanceDetails(Optional.of(s));
 
+            // TO DO Fix Ingredient Export
             if (s.impuritiesSubstanceList.size() > 0) {
                 List<ImpuritiesSubstance> subList = s.impuritiesSubstanceList;
 
