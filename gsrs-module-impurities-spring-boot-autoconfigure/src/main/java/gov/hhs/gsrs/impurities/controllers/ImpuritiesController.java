@@ -59,19 +59,22 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
     private ETagRepository eTagRepository;
 
     @PersistenceContext(unitName = ImpuritiesDataSourceConfig.NAME_ENTITY_MANAGER)
-    @Autowired
     private EntityManager entityManager;
+
     @Autowired
     private GsrsControllerConfiguration gsrsControllerConfiguration;
+
     @Autowired
     private PlatformTransactionManager transactionManager;
+
     @Autowired
     private ExportService exportService;
+
     @Autowired
     private TaskExecutor taskExecutor;
+
     @Autowired
     private GsrsExportConfiguration gsrsExportConfiguration;
-
 
     @Autowired
     private ImpuritiesEntityService impuritiesEntityService;

@@ -10,6 +10,8 @@ import ix.ginas.models.serialization.GsrsDateDeserializer;
 import ix.ginas.models.serialization.GsrsDateSerializer;
 
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -79,11 +81,12 @@ public class ImpuritiesTesting extends AbstractGsrsEntity {
     */
 
     @JoinColumn(name = "IMPURITIES_TEST_ID", referencedColumnName = "ID")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<ImpuritiesDetails> impuritiesDetailsList = new ArrayList<ImpuritiesDetails>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "IMPURITIES_TEST_ID", referencedColumnName = "ID")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<ImpuritiesUnspecified> impuritiesUnspecifiedList = new ArrayList<ImpuritiesUnspecified>();
 
 }

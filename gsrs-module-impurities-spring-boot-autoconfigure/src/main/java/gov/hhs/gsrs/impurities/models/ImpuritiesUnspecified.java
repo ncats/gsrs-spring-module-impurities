@@ -98,7 +98,7 @@ public class ImpuritiesUnspecified extends AbstractGsrsEntity {
     */
 
     @JoinColumn(name = "IMPURITIES_UNSPECIFIED_ID", referencedColumnName = "ID")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<ImpuritiesIdentityCriteria> identityCriteriaList = new ArrayList<ImpuritiesIdentityCriteria>();
 
 }

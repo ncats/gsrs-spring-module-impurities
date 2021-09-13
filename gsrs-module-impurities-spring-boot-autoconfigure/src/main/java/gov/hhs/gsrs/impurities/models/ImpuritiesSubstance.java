@@ -11,6 +11,8 @@ import ix.ginas.models.serialization.GsrsDateDeserializer;
 import ix.ginas.models.serialization.GsrsDateSerializer;
 
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -76,15 +78,17 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
     private Date lastModifiedDate;
 
     @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<ImpuritiesTesting> impuritiesTestList = new ArrayList<ImpuritiesTesting>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<ImpuritiesResidualSolvents> impuritiesResidualSolventsList = new ArrayList<ImpuritiesResidualSolvents>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<ImpuritiesInorganic> impuritiesInorganicList = new ArrayList<ImpuritiesInorganic>();
 
     /*
