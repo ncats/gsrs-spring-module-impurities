@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
-@EntityListeners({AuditingEntityListener.class, GsrsEntityProcessorListener.class, IndexerEntityListener.class, BackupEntityProcessorListener.class})
 @IndexableRoot
 @Backup
 @Data
