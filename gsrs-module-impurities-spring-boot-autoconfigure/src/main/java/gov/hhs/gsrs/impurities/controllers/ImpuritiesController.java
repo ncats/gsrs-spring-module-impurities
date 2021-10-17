@@ -151,6 +151,38 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
         }
     }
 
+
+
+    @GetGsrsRestApiMapping("/subRelationship/{substanceUuid}")
+    public ResponseEntity<String> findSubstanceRelationshipBySubstanceUuid(@PathVariable("substanceUuid") String substanceUuid) throws Exception {
+        List<SubstanceRelationship> list = impuritiesEntityService.findSubstanceRelationshipBySubstanceUuid(substanceUuid);
+        if (substanceUuid == null) {
+            throw new IllegalArgumentException("There is no Substance Id provided in findSubstanceRelationshipBySubstanceUuid");
+        }
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
+    public JsonNode injectSubstanceBySubstanceUuid(String substanceUuid) {
+
+        JsonNode actualObj = null;
+        try {
+            if (substanceUuid != null) {
+
+                ResponseEntity<String> response = this.substanceModuleService.getSubstanceDetailsFromUUID(substanceUuid);
+
+                String jsonString = response.getBody();
+                if (jsonString != null) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    actualObj = mapper.readTree(jsonString);
+                }
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return actualObj;
+    }
+
     public Optional<Impurities> injectSubstanceDetails(Optional<Impurities> impurities) {
 
         try {

@@ -14,4 +14,10 @@ import java.util.Optional;
 @Service
 public interface ImpuritiesRepository extends GsrsRepository<Impurities, Long> {
     Optional<Impurities> findById(Long id);
+
+    @Query("SELECT a FROM SubstanceRelationship a WHERE a.substanceId = ?1")
+    List<SubstanceRelationship> findSubstanceRelationshipBySubstanceUuid(String substanceUuid);
 }
+
+
+

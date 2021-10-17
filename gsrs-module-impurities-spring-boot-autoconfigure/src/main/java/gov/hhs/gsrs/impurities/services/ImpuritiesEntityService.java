@@ -1,6 +1,6 @@
 package gov.hhs.gsrs.impurities.services;
 
-import gov.hhs.gsrs.impurities.models.Impurities;
+import gov.hhs.gsrs.impurities.models.*;
 import gov.hhs.gsrs.impurities.repositories.ImpuritiesRepository;
 
 import gsrs.controller.IdHelpers;
@@ -168,6 +168,12 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
             return Optional.of(found.get().id);
         }
         return Optional.empty();
+    }
+
+
+    public List<SubstanceRelationship> findSubstanceRelationshipBySubstanceUuid(String substanceUuid) {
+        List<SubstanceRelationship> list = repository.findSubstanceRelationshipBySubstanceUuid(substanceUuid);
+        return list;
     }
 
 }

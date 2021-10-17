@@ -6,10 +6,8 @@ import gsrs.GsrsEntityProcessorListener;
 import gsrs.indexer.IndexerEntityListener;
 import gsrs.model.AbstractGsrsEntity;
 import gsrs.model.AbstractGsrsManualDirtyEntity;
-import ix.core.models.Backup;
-import ix.core.models.Indexable;
-import ix.core.models.IndexableRoot;
-import ix.core.models.IxModel;
+import gsrs.security.GsrsSecurityUtils;
+import ix.core.models.*;
 import ix.core.search.text.TextIndexerEntityListener;
 import ix.ginas.models.serialization.GsrsDateDeserializer;
 import ix.ginas.models.serialization.GsrsDateSerializer;
@@ -27,6 +25,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -112,5 +112,53 @@ public class Impurities extends AbstractGsrsEntity {
     @JoinColumn(name = "IMPURITIES_TOTAL_ID", referencedColumnName = "ID")
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public ImpuritiesTotal impuritiesTotal;
+
+    @PrePersist
+    public void prePersist() {
+        try {
+            UserProfile profile = (UserProfile) GsrsSecurityUtils.getCurrentUser();
+            if (profile != null) {
+                Principal p = profile.user;
+                if (p != null) {
+                    this.createdBy = p.username;
+                    this.modifiedBy = p.username;
+                }
+            }
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        try {
+            UserProfile profile = (UserProfile) GsrsSecurityUtils.getCurrentUser();
+            if (profile != null) {
+                Principal p = profile.user;
+                if (p != null) {
+                    this.modifiedBy = p.username;
+                }
+            }
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public String getCreatedBy () {
+        return this.createdBy;
+    }
+
+    public Date getCreationDate() {
+        //Get from Database
+        return this.creationDate;
+    }
+
+    public String getModifiedBy () {
+        return this.modifiedBy;
+    }
+
+    public Date getLastModifiedDate() {
+        return this.lastModifiedDate;
+    }
 
 }

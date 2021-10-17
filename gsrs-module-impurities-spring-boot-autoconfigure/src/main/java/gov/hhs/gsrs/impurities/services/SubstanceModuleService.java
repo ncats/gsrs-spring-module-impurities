@@ -78,7 +78,6 @@ public class SubstanceModuleService {
     // actually not needed; at least GSRS public version is not giving me CORS problem
 
     public ResponseEntity<String> getSubstanceDetailsFromUUID(String uuid) {
-        System.out.println("Inside "+ "getSubstanceDetailsFromUUID " + uuid);
         // is there a way to make this final and use property?
         String urlTemplate1 = baseUrl +  "api/v1/substances(%s)";
         Boolean exists;
