@@ -6,6 +6,7 @@ import gsrs.GsrsEntityProcessorListener;
 import gsrs.indexer.IndexerEntityListener;
 import gsrs.model.AbstractGsrsEntity;
 import gsrs.model.AbstractGsrsManualDirtyEntity;
+import gsrs.ForceUpdateDirtyMakerMixin;
 import gsrs.security.GsrsSecurityUtils;
 import ix.core.models.*;
 import ix.core.search.text.TextIndexerEntityListener;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES")
-public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMixin {
+public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMakerMixin {
 
     @Id
     @SequenceGenerator(name = "impSeq", sequenceName = "SRSCID_SQ_IMPURITIES_ID", allocationSize = 1)
