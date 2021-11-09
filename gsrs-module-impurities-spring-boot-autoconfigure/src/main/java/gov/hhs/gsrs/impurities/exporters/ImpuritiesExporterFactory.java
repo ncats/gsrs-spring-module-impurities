@@ -3,11 +3,14 @@ package gov.hhs.gsrs.impurities.exporters;
 import gov.hhs.gsrs.impurities.models.*;
 import gov.hhs.gsrs.impurities.controllers.*;
 
-import ix.ginas.exporters.*;
+import gsrs.DefaultDataSourceConfig;
 import gsrs.springUtils.AutowireHelper;
+import ix.ginas.exporters.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,6 +18,9 @@ import java.io.OutputStreamWriter;;
 import java.util.*;
 
 public class ImpuritiesExporterFactory implements ExporterFactory {
+
+	@PersistenceContext(unitName =  DefaultDataSourceConfig.NAME_ENTITY_MANAGER)
+	public EntityManager entityManager;
 
 	@Autowired
 	public ImpuritiesController impuritiesController;
@@ -53,7 +59,7 @@ public class ImpuritiesExporterFactory implements ExporterFactory {
 		ImpuritiesExporter.Builder builder = new ImpuritiesExporter.Builder(spreadsheet);
 		configure(builder, params);
 		
-		return builder.build(impuritiesController);
+		return builder.build(impuritiesController, entityManager);
 	}
 
 	protected void configure(ImpuritiesExporter.Builder builder, Parameters params) {

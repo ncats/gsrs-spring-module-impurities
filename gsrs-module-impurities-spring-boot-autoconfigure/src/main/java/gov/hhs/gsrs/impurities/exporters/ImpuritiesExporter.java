@@ -4,12 +4,16 @@ import gov.hhs.gsrs.impurities.controllers.ImpuritiesController;
 import gov.hhs.gsrs.impurities.models.*;
 
 import ix.ginas.exporters.*;
+import ix.ginas.models.v1.Substance;
+import ix.core.EntityFetcher;
+import java.util.UUID;
 import gsrs.springUtils.AutowireHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.io.IOException;
 import java.util.*;
 
@@ -43,11 +47,14 @@ public class ImpuritiesExporter implements Exporter<Impurities> {
 
     private final List<ColumnValueRecipe<Impurities>> recipeMap;
 
+    private static EntityManager entityManager;
+
     private static StringBuilder substanceApprovalIdSB;
 
-    private ImpuritiesExporter(Builder builder, ImpuritiesController impuritiesController) {
+    private ImpuritiesExporter(Builder builder, ImpuritiesController impuritiesController, EntityManager entityManager) {
 
         this.impuritiesController = impuritiesController;
+        this.entityManager = entityManager;
         substanceApprovalIdSB = new StringBuilder();
 
         this.spreadsheet = builder.spreadsheet;
@@ -148,12 +155,31 @@ public class ImpuritiesExporter implements Exporter<Impurities> {
 
                     try {
                         if (impuritiesSub.substanceUuid != null) {
+
+                            /*
                             if (impuritiesController != null) {
                                 JsonNode subJson = impuritiesController.injectSubstanceBySubstanceUuid(impuritiesSub.substanceUuid);
 
                                 if (subJson != null) {
                                     substanceName = subJson.path("_name").textValue();
                                     approvalId = subJson.path("approvalID").textValue();
+                             */
+                            //TODO: replace with SubstanceKeyResolver for this later
+                            //Get Substance Object by Substance Key
+                            Query query = entityManager.createQuery("SELECT s FROM Substance s JOIN s.codes c WHERE s.uuid=:subUuid");
+                            query.setParameter("subUuid", UUID.fromString(impuritiesSub.substanceUuid));
+                            Substance sub = (Substance) query.getSingleResult();
+
+                            if (sub != null) {
+                                // if (applicationController != null) {
+                                //     JsonNode subJson = applicationController.injectSubstanceBySubstanceKey(ingred.substanceKey);
+
+                                //     if (subJson != null) {
+                                //        substanceName = subJson.path("_name").textValue();
+                                //         approvalId = subJson.path("approvalID").textValue();
+
+                                substanceName = ((Substance) EntityFetcher.of(sub.fetchKey()).call()).getName();
+                                approvalId = sub.approvalID;
 
                                     // Get Substance Name
                                     sb.append((substanceName != null) ? substanceName : "(No Ingredient Name)");
@@ -162,7 +188,7 @@ public class ImpuritiesExporter implements Exporter<Impurities> {
                                     // approval Id.
                                     substanceApprovalIdSB.append((approvalId != null) ? approvalId : "(No Approval ID)");
                                 }
-                            }
+                         //   }
                         } else {
                             sb.append("(No Ingredient Name)");
                             substanceApprovalIdSB.append("(No Approval ID)");
@@ -235,8 +261,8 @@ public class ImpuritiesExporter implements Exporter<Impurities> {
             return this;
         }
 
-        public ImpuritiesExporter build(ImpuritiesController impuritiesController) {
-            return new ImpuritiesExporter(this, impuritiesController);
+        public ImpuritiesExporter build(ImpuritiesController impuritiesController, EntityManager entityManager) {
+            return new ImpuritiesExporter(this, impuritiesController, entityManager);
         }
 
         public Builder includePublicDataOnly(boolean publicOnly) {
