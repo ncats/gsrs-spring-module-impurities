@@ -9,11 +9,15 @@ import gsrs.model.AbstractGsrsManualDirtyEntity;
 import gsrs.ForceUpdateDirtyMakerMixin;
 import gsrs.security.GsrsSecurityUtils;
 import ix.core.models.*;
+import ix.core.SingleParent;
 import ix.core.search.text.TextIndexerEntityListener;
 import ix.ginas.models.serialization.GsrsDateDeserializer;
 import ix.ginas.models.serialization.GsrsDateSerializer;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
@@ -104,11 +108,26 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
         return "Not Deprecated";
     }
 
-    @JoinColumn(name = "IMPURITIES_ID", referencedColumnName = "ID")
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  //  @JoinColumn(name = "IMPURITIES_ID", referencedColumnName = "ID")
+   // @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   // public List<ImpuritiesSubstance> impuritiesSubstanceList = new ArrayList<ImpuritiesSubstance>();
+
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesSubstance> impuritiesSubstanceList = new ArrayList<ImpuritiesSubstance>();
 
-   // @LazyCollection(LazyCollectionOption.FALSE)
+    public void setImpuritiesSubstanceList(List<ImpuritiesSubstance> impuritiesSubstanceList) {
+        this.impuritiesSubstanceList = impuritiesSubstanceList;
+        if(impuritiesSubstanceList !=null) {
+            for (ImpuritiesSubstance imp : impuritiesSubstanceList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
+    // @LazyCollection(LazyCollectionOption.FALSE)
     @Basic(fetch = FetchType.LAZY)
     @JoinColumn(name = "IMPURITIES_TOTAL_ID", referencedColumnName = "ID")
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

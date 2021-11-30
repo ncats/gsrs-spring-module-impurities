@@ -5,11 +5,16 @@ import gsrs.model.AbstractGsrsEntity;
 import gsrs.model.AbstractGsrsManualDirtyEntity;
 import ix.core.models.Indexable;
 import ix.core.models.IxModel;
+import ix.core.SingleParent;
+import ix.core.models.ParentReference;
 import ix.core.search.text.TextIndexerEntityListener;
 import ix.ginas.models.serialization.GsrsDateDeserializer;
 import ix.ginas.models.serialization.GsrsDateSerializer;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+@SingleParent
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_TEST")
@@ -72,6 +78,18 @@ public class ImpuritiesTesting extends AbstractGsrsEntity {
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
 
+    @Indexable(indexed=false)
+    @ParentReference
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="IMPURITIES_SUBSTANCE_ID")
+    public ImpuritiesSubstance owner;
+
+    public void setOwner(ImpuritiesSubstance impuritiesSubstance) {
+        this.owner = impuritiesSubstance;
+    }
+
     /*
     @Indexable(indexed=false)
     @JsonIgnore
@@ -80,13 +98,43 @@ public class ImpuritiesTesting extends AbstractGsrsEntity {
     public ImpuritiesSubstance impuritiesTestFromSub;
     */
 
-    @JoinColumn(name = "IMPURITIES_TEST_ID", referencedColumnName = "ID")
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   // @JoinColumn(name = "IMPURITIES_TEST_ID", referencedColumnName = "ID")
+   // @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   // public List<ImpuritiesDetails> impuritiesDetailsList = new ArrayList<ImpuritiesDetails>();
+
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesDetails> impuritiesDetailsList = new ArrayList<ImpuritiesDetails>();
 
+    public void setImpuritiesDetailsList(List<ImpuritiesDetails> impuritiesDetailsList) {
+        this.impuritiesDetailsList = impuritiesDetailsList;
+        if(impuritiesDetailsList !=null) {
+            for (ImpuritiesDetails imp : impuritiesDetailsList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
+  //  @LazyCollection(LazyCollectionOption.FALSE)
+  //  @JoinColumn(name = "IMPURITIES_TEST_ID", referencedColumnName = "ID")
+  //  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  //  public List<ImpuritiesUnspecified> impuritiesUnspecifiedList = new ArrayList<ImpuritiesUnspecified>();
+
+    @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "IMPURITIES_TEST_ID", referencedColumnName = "ID")
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesUnspecified> impuritiesUnspecifiedList = new ArrayList<ImpuritiesUnspecified>();
+
+    public void setImpuritiesUnspecifiedList(List<ImpuritiesUnspecified> impuritiesUnspecifiedList) {
+        this.impuritiesUnspecifiedList = impuritiesUnspecifiedList;
+        if(impuritiesUnspecifiedList !=null) {
+            for (ImpuritiesUnspecified imp : impuritiesUnspecifiedList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
 
 }

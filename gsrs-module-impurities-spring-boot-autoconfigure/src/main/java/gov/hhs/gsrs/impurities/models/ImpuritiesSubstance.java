@@ -6,11 +6,16 @@ import gsrs.model.AbstractGsrsEntity;
 import gsrs.model.AbstractGsrsManualDirtyEntity;
 import ix.core.models.Indexable;
 import ix.core.models.IxModel;
+import ix.core.SingleParent;
+import ix.core.models.ParentReference;
 import ix.core.search.text.TextIndexerEntityListener;
 import ix.ginas.models.serialization.GsrsDateDeserializer;
 import ix.ginas.models.serialization.GsrsDateSerializer;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
@@ -27,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+@SingleParent
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_SUBSTANCE")
@@ -77,19 +83,76 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
 
-    @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Indexable(indexed=false)
+    @ParentReference
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="IMPURITIES_ID")
+    public Impurities owner;
+
+    public void setOwner(Impurities impurities) {
+        this.owner = impurities;
+    }
+
+  //  @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
+  //  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  //  public List<ImpuritiesTesting> impuritiesTestList = new ArrayList<ImpuritiesTesting>();
+
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesTesting> impuritiesTestList = new ArrayList<ImpuritiesTesting>();
 
+    public void setImpuritiesTestList(List<ImpuritiesTesting> impuritiesTestList) {
+        this.impuritiesTestList = impuritiesTestList;
+        if(impuritiesTestList !=null) {
+            for (ImpuritiesTesting imp : impuritiesTestList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
+   // @LazyCollection(LazyCollectionOption.FALSE)
+  //  @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
+  //  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  //  public List<ImpuritiesResidualSolvents> impuritiesResidualSolventsList = new ArrayList<ImpuritiesResidualSolvents>();
+
+    @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesResidualSolvents> impuritiesResidualSolventsList = new ArrayList<ImpuritiesResidualSolvents>();
 
+    public void setImpuritiesResidualSolventsList(List<ImpuritiesResidualSolvents> impuritiesResidualSolventsList) {
+        this.impuritiesResidualSolventsList = impuritiesResidualSolventsList;
+        if(impuritiesResidualSolventsList !=null) {
+            for (ImpuritiesResidualSolvents imp : impuritiesResidualSolventsList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
+    @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesInorganic> impuritiesInorganicList = new ArrayList<ImpuritiesInorganic>();
+
+    public void setImpuritiesInorganicList(List<ImpuritiesInorganic> impuritiesInorganicList) {
+        this.impuritiesInorganicList = impuritiesInorganicList;
+        if(impuritiesInorganicList !=null) {
+            for (ImpuritiesInorganic imp : impuritiesInorganicList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
+  //  @LazyCollection(LazyCollectionOption.FALSE)
+  //  @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
+  //  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   // public List<ImpuritiesInorganic> impuritiesInorganicList = new ArrayList<ImpuritiesInorganic>();
 
     /*
     @Transient

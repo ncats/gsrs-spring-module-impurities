@@ -5,11 +5,18 @@ import gsrs.model.AbstractGsrsEntity;
 import gsrs.model.AbstractGsrsManualDirtyEntity;
 import ix.core.models.Indexable;
 import ix.core.models.IxModel;
+import ix.core.SingleParent;
+import ix.core.models.ParentReference;
 import ix.core.search.text.TextIndexerEntityListener;
 import ix.ginas.models.serialization.GsrsDateDeserializer;
 import ix.ginas.models.serialization.GsrsDateSerializer;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -37,6 +44,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+@SingleParent
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_DETAILS")
@@ -103,8 +111,36 @@ public class ImpuritiesDetails extends AbstractGsrsEntity {
     public ImpuritiesTesting impuritiesTest;
     */
 
+    @Indexable(indexed=false)
+    @ParentReference
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="IMPURITIES_TEST_ID")
+    public ImpuritiesTesting owner;
+
+    public void setOwner(ImpuritiesTesting impuritiesTesting) {
+        this.owner = impuritiesTesting;
+    }
+
+    /*
     @JoinColumn(name = "IMPURITIES_DETAILS_ID", referencedColumnName = "ID")
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<ImpuritiesIdentityCriteria> identityCriteriaList = new ArrayList<ImpuritiesIdentityCriteria>();
+    */
 
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ownerDetails")
+    public List<ImpuritiesIdentityCriteria> identityCriteriaList = new ArrayList<ImpuritiesIdentityCriteria>();
+
+    public void setIdentityCriteriaList(List<ImpuritiesIdentityCriteria> identityCriteriaList) {
+        this.identityCriteriaList = identityCriteriaList;
+        if(identityCriteriaList !=null) {
+            for (ImpuritiesIdentityCriteria imp : identityCriteriaList)
+            {
+                imp.setAppropriateOwner(this);
+            }
+        }
+    }
 }

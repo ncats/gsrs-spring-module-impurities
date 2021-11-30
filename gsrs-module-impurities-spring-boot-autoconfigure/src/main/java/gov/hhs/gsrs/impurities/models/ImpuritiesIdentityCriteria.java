@@ -5,11 +5,16 @@ import gsrs.model.AbstractGsrsEntity;
 import gsrs.model.AbstractGsrsManualDirtyEntity;
 import ix.core.models.Indexable;
 import ix.core.models.IxModel;
+import ix.core.SingleParent;
+import ix.core.models.ParentReference;
 import ix.core.search.text.TextIndexerEntityListener;
 import ix.ginas.models.serialization.GsrsDateDeserializer;
 import ix.ginas.models.serialization.GsrsDateSerializer;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -37,6 +42,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+@SingleParent
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_IDENTITY")
@@ -79,6 +85,41 @@ public class ImpuritiesIdentityCriteria extends AbstractGsrsEntity {
     @Indexable( name = "Last Modified Date", sortable=true)
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
+
+    @Indexable(indexed=false)
+   // @ParentReference
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="IMPURITIES_UNSPECIFIED_ID")
+    public ImpuritiesUnspecified owner;
+
+    public void setOwner(ImpuritiesUnspecified impuritiesUnspecified) {
+        if (impuritiesUnspecified instanceof ImpuritiesUnspecified) {
+            this.owner = impuritiesUnspecified;
+        }
+    }
+
+    @Indexable(indexed=false)
+   // @ParentReference
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="IMPURITIES_DETAILS_ID")
+    public ImpuritiesDetails ownerDetails;
+
+    public void setOwnerDetails(ImpuritiesDetails impuritiesDetails) {
+        this.ownerDetails = impuritiesDetails;
+    }
+
+    @ParentReference
+    public void setAppropriateOwner(Object obj) {
+        if (obj instanceof ImpuritiesUnspecified) {
+            this.owner = (ImpuritiesUnspecified) obj;
+        } else if (obj instanceof ImpuritiesDetails) {
+            this.ownerDetails= (ImpuritiesDetails) obj;
+        }
+    }
 
     /*
     @ManyToOne
