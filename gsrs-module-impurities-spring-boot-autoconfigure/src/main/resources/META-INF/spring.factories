@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=gov.nih.ncats.impurities.autoconfigure.GsrsImpuritiesAutoConfiguration
+=======
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=gov.hhs.gsrs.impurities.autoconfigure.GsrsImpuritiesAutoConfiguration
+>>>>>>> starter
