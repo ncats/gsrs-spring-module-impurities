@@ -48,6 +48,10 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
     @Column(name = "SUBSTANCE_UUID")
     public String substanceUuid;
 
+    @Indexable
+    @Column(name = "APPROVAL_ID")
+    public String approvalID;
+
     @Column(name="LOW")
     public Double low;
 

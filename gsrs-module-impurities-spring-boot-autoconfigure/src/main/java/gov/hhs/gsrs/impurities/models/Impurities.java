@@ -75,6 +75,12 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     @Column(name = "PRODUCT_ID")
     public String productId;
 
+    @Column(name = "DATE_TYPE")
+    public String dateType;
+
+    @Column(name = "DATE_TYPE_DATE")
+    private Date dateTypeDate;
+
     @Version
     public Long internalVersion;
 
@@ -108,10 +114,6 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
         return "Not Deprecated";
     }
 
-  //  @JoinColumn(name = "IMPURITIES_ID", referencedColumnName = "ID")
-   // @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   // public List<ImpuritiesSubstance> impuritiesSubstanceList = new ArrayList<ImpuritiesSubstance>();
-
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
@@ -127,7 +129,6 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
         }
     }
 
-    // @LazyCollection(LazyCollectionOption.FALSE)
     @Basic(fetch = FetchType.LAZY)
     @JoinColumn(name = "IMPURITIES_TOTAL_ID", referencedColumnName = "ID")
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -181,4 +182,43 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
         return this.lastModifiedDate;
     }
 
+    public String getDateTypeDate() {
+        //Convert Date to String, get from database
+        return convertDateToString(this.dateTypeDate);
+    }
+
+    public void setDateTypeDate(String dateTypeDate) {
+        //Convert String to Date, store into database
+        this.dateTypeDate = convertStringToDate(dateTypeDate);
+    }
+
+    public String convertDateToString(Date dtDate) {
+
+        String strDate = null;
+        try {
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            if (dtDate != null) {
+                strDate = df.format(dtDate);
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return strDate;
+    }
+
+    public Date convertStringToDate(String strDate) {
+
+        Date dtDate = null;
+        try {
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            if ((strDate != null) && (strDate.length() > 0)) {
+                dtDate = df.parse(strDate);
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return dtDate;
+    }
 }

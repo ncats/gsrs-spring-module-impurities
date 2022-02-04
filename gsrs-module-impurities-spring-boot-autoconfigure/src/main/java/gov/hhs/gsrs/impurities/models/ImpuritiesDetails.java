@@ -56,6 +56,7 @@ public class ImpuritiesDetails extends AbstractGsrsEntity {
     @Column(name = "ID")
     public Long id;
 
+    @Indexable
     @Column(name = "RELATED_SUBSTANCE_UUID")
     public String relatedSubstanceUuid;
 
