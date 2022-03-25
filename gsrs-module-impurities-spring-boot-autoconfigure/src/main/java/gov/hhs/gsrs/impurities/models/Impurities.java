@@ -67,10 +67,10 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     public String specType;
 
     @Column(name = "COMPANY_PRODUCT_NAME")
-    public String companyProductName;
+    public String productSubstanceName;
 
     @Column(name = "COMPANY_NAME")
-    public String companyName;
+    public String submitterName;
 
     @Column(name = "PRODUCT_ID")
     public String productId;

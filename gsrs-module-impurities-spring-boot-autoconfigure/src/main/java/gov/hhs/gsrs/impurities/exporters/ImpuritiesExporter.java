@@ -25,8 +25,8 @@ enum ImpDefaultColumns implements Column {
     TYPE,
     SPEC_TYPE,
     PRODUCT_ID,
-    COMPANY_PRODUCT_NAME,
-    COMPANY_NAME,
+    PRODUCT_SUBSTANCE_NAME,
+    SUBMITTER_NAME,
     TOTAL_IMPURITIES_TEST_TYPE,
     TOTAL_IMPURITIES_LIMIT_VALUE,
     TOTAL_IMPURITIES_AMOUNT_VALUE,
@@ -103,8 +103,8 @@ public class ImpuritiesExporter implements Exporter<Impurities> {
         DEFAULT_RECIPE_MAP.put(ImpDefaultColumns.TYPE, SingleColumnValueRecipe.create(ImpDefaultColumns.TYPE, (s, cell) -> cell.writeString(s.type)));
         DEFAULT_RECIPE_MAP.put(ImpDefaultColumns.SPEC_TYPE, SingleColumnValueRecipe.create(ImpDefaultColumns.SPEC_TYPE, (s, cell) -> cell.writeString(s.specType)));
         DEFAULT_RECIPE_MAP.put(ImpDefaultColumns.PRODUCT_ID, SingleColumnValueRecipe.create(ImpDefaultColumns.PRODUCT_ID, (s, cell) -> cell.writeString(s.productId)));
-        DEFAULT_RECIPE_MAP.put(ImpDefaultColumns.COMPANY_PRODUCT_NAME, SingleColumnValueRecipe.create(ImpDefaultColumns.COMPANY_PRODUCT_NAME, (s, cell) -> cell.writeString(s.companyProductName)));
-        DEFAULT_RECIPE_MAP.put(ImpDefaultColumns.COMPANY_NAME, SingleColumnValueRecipe.create(ImpDefaultColumns.COMPANY_NAME, (s, cell) -> cell.writeString(s.companyName)));
+        DEFAULT_RECIPE_MAP.put(ImpDefaultColumns.PRODUCT_SUBSTANCE_NAME, SingleColumnValueRecipe.create(ImpDefaultColumns.PRODUCT_SUBSTANCE_NAME, (s, cell) -> cell.writeString(s.productSubstanceName)));
+        DEFAULT_RECIPE_MAP.put(ImpDefaultColumns.SUBMITTER_NAME, SingleColumnValueRecipe.create(ImpDefaultColumns.SUBMITTER_NAME, (s, cell) -> cell.writeString(s.submitterName)));
 
         DEFAULT_RECIPE_MAP.put(ImpDefaultColumns.TOTAL_IMPURITIES_TEST_TYPE, SingleColumnValueRecipe.create(ImpDefaultColumns.TOTAL_IMPURITIES_TEST_TYPE, (s, cell) -> {
             if (s.impuritiesTotal != null ) {
