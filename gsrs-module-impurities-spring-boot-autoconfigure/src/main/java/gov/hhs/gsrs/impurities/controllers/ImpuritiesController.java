@@ -104,6 +104,7 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
         return stream;
     }
 
+    /*
     @PreAuthorize("isAuthenticated()")
    // @GetGsrsRestApiMapping("/export/{etagId}/{format}")
     public ResponseEntity<Object> createExport(@PathVariable("etagId") String etagId,
@@ -150,7 +151,7 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
             return factory.createNewExporter(pos, params);
         }
     }
-
+    */
 
 
     @GetGsrsRestApiMapping("/subRelationship/{substanceUuid}")
