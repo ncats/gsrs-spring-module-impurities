@@ -49,23 +49,27 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     @Column(name = "ID")
     public Long id;
 
-    @Indexable(facet = true, name = "Source Type")
+    @Indexable(facet = true, name = "Source Type", sortable = true)
     @Column(name = "SOURCE_TYPE")
     public String sourceType;
 
-    @Indexable(facet = true, name = "Source")
+    @Indexable(facet = true, name = "Source", sortable = true)
     @Column(name = "SOURCE")
     public String source;
 
+    @Indexable(sortable = true)
     @Column(name = "SOURCE_ID")
     public String sourceId;
 
+    @Indexable(sortable = true)
     @Column(name = "TYPE")
     public String type;
 
+    @Indexable(sortable = true)
     @Column(name = "SPEC_TYPE")
     public String specType;
 
+    @Indexable(sortable = true)
     @Column(name = "COMPANY_PRODUCT_NAME")
     public String productSubstanceName;
 
