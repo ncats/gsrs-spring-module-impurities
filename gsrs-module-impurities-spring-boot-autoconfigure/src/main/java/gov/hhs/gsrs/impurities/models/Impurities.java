@@ -73,6 +73,7 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     @Column(name = "COMPANY_PRODUCT_NAME")
     public String productSubstanceName;
 
+    @Indexable(sortable = true)
     @Column(name = "COMPANY_NAME")
     public String submitterName;
 
