@@ -36,7 +36,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_SUBSTANCE")
-public class ImpuritiesSubstance extends AbstractGsrsEntity {
+public class ImpuritiesSubstance extends ImpuritiesCommanData {
 
     @Id
     @SequenceGenerator(name = "impSubSeq", sequenceName = "SRSCID_SQ_IMPURITIES_SUBS_ID", allocationSize = 1)
@@ -64,6 +64,7 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
     @Column(name="COMMENTS")
     public String comments;
 
+    /*
     @Version
     public Long internalVersion;
 
@@ -86,6 +87,7 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
     @Indexable( name = "Last Modified Date", sortable=true)
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
+    */
 
     // Set PARENT Class, Impurities
     @Indexable(indexed=false)

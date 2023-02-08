@@ -48,7 +48,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_UNSPECIFIED")
-public class ImpuritiesUnspecified extends AbstractGsrsEntity {
+public class ImpuritiesUnspecified extends ImpuritiesCommanData {
 
     @Id
     @SequenceGenerator(name = "impUnspecSeq", sequenceName = "SRSCID_SQ_IMPURITIES_UNSPEC_ID", allocationSize = 1)
@@ -74,6 +74,7 @@ public class ImpuritiesUnspecified extends AbstractGsrsEntity {
     @Column(name = "COMMENTS")
     public String comments;
 
+    /*
     @Version
     public Long internalVersion;
 
@@ -96,7 +97,9 @@ public class ImpuritiesUnspecified extends AbstractGsrsEntity {
     @Indexable( name = "Last Modified Date", sortable=true)
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
+    */
 
+    // Set PARENT Class, ImpuritiesTesting
     @Indexable(indexed=false)
     @ParentReference
     @EqualsAndHashCode.Exclude
@@ -105,27 +108,18 @@ public class ImpuritiesUnspecified extends AbstractGsrsEntity {
     @JoinColumn(name="IMPURITIES_TEST_ID")
     public ImpuritiesTesting owner;
 
+    // Set PARENT Class, ImpuritiesTesting
     public void setOwner(ImpuritiesTesting impuritiesTesting) {
         this.owner = impuritiesTesting;
     }
 
-    /*
-    @Indexable(indexed=false)
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="IMPURITIES_TEST_ID")
-    public ImpuritiesTesting impuritiesUnspecFromTest;
-    */
-
-   // @JoinColumn(name = "IMPURITIES_UNSPECIFIED_ID", referencedColumnName = "ID")
-  //  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   // public List<ImpuritiesIdentityCriteria> identityCriteriaList = new ArrayList<ImpuritiesIdentityCriteria>();
-
+    // Set CHILDREN Class, ImpuritiesIdentityCriteria
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesIdentityCriteria> identityCriteriaList = new ArrayList<ImpuritiesIdentityCriteria>();
 
+    // Set CHILDREN Class, ImpuritiesIdentityCriteria
     public void setIdentityCriteriaList(List<ImpuritiesIdentityCriteria> identityCriteriaList) {
         this.identityCriteriaList = identityCriteriaList;
         if(identityCriteriaList !=null) {

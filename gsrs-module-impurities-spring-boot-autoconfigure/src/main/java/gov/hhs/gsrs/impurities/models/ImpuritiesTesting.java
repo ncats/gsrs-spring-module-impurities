@@ -35,7 +35,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_TEST")
-public class ImpuritiesTesting extends AbstractGsrsEntity {
+public class ImpuritiesTesting extends ImpuritiesCommanData {
 
     @Id
     @SequenceGenerator(name = "impTestSeq", sequenceName = "SRSCID_SQ_IMPURITIES_TEST_ID", allocationSize = 1)
@@ -101,8 +101,9 @@ public class ImpuritiesTesting extends AbstractGsrsEntity {
     @Column(name = "SYSTEM_SUITABILITY_SOLUTION")
     public String systemSuitabilitySolution;
 
+    // Suitability Requirements Resolution
     @Column(name = "SUITABILITY_REQ_RESOLUTION")
-    public String suitabilityRequirementsResolution;
+    public String suitabilityReqResolution;
 
     // Suitability Requirements Relative Standard Deviation
     @Column(name = "SUITABILITY_REQ_REL_STAND_DEV")
@@ -111,6 +112,7 @@ public class ImpuritiesTesting extends AbstractGsrsEntity {
     @Column(name = "ELUTION_TYPE")
     public String elutionType;
 
+    /*
     @Version
     public Long internalVersion;
 
@@ -133,6 +135,7 @@ public class ImpuritiesTesting extends AbstractGsrsEntity {
     @Indexable( name = "Last Modified Date", sortable=true)
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
+    */
 
     // Set PARENT Class, ImpuritiesSubstance
     @Indexable(indexed=false)
