@@ -74,7 +74,7 @@ public class ImpuritiesElutionSolvent extends ImpuritiesCommonData {
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
     */
-    
+
     // Set PARENT Class, ImpuritiesTesting
     @Indexable(indexed=false)
     @ParentReference
