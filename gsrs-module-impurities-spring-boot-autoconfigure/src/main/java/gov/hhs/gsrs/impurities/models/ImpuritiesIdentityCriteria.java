@@ -46,7 +46,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_IDENTITY")
-public class ImpuritiesIdentityCriteria extends AbstractGsrsEntity {
+public class ImpuritiesIdentityCriteria extends ImpuritiesCommonData {
 
     @Id
     @SequenceGenerator(name = "impIdentSeq", sequenceName = "SRSCID_SQ_IMPURITIES_IDENT_ID", allocationSize = 1)
@@ -63,6 +63,7 @@ public class ImpuritiesIdentityCriteria extends AbstractGsrsEntity {
     @Column(name = "UNIT")
     public String unit;
 
+    /*
     @Version
     public Long internalVersion;
 
@@ -85,6 +86,7 @@ public class ImpuritiesIdentityCriteria extends AbstractGsrsEntity {
     @Indexable( name = "Last Modified Date", sortable=true)
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
+    */
 
     @Indexable(indexed=false)
    // @ParentReference
@@ -120,14 +122,4 @@ public class ImpuritiesIdentityCriteria extends AbstractGsrsEntity {
             this.ownerDetails= (ImpuritiesDetails) obj;
         }
     }
-
-    /*
-    @ManyToOne
-    @JoinColumn(name = "IMPURITIES_DETAILS_ID")
-    private ImpuritiesDetails impuritiesDetails;
-
-    @ManyToOne
-    @JoinColumn(name = "IMPURITIES_UNSPECIFIED_ID")
-    private ImpuritiesUnspecified impuritiesUnspecified;
-    */
 }

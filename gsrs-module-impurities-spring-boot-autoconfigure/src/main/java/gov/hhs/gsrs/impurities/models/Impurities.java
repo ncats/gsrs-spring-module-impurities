@@ -41,7 +41,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES")
-public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMakerMixin {
+public class Impurities extends ImpuritiesCommonData {
 
     @Id
     @SequenceGenerator(name = "impSeq", sequenceName = "SRSCID_SQ_IMPURITIES_ID", allocationSize = 1)
@@ -86,6 +86,7 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     @Column(name = "DATE_TYPE_DATE")
     private Date dateTypeDate;
 
+    /*
     @Version
     public Long internalVersion;
 
@@ -108,6 +109,7 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     @Indexable(name = "Last Modified Date", sortable = true)
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
+    */
 
     public Long getId() {
         return this.id;
@@ -139,6 +141,7 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public ImpuritiesTotal impuritiesTotal;
 
+    /*
     @PrePersist
     public void prePersist() {
         try {
@@ -186,6 +189,7 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     public Date getLastModifiedDate() {
         return this.lastModifiedDate;
     }
+    */
 
     public String getDateTypeDate() {
         //Convert Date to String, get from database

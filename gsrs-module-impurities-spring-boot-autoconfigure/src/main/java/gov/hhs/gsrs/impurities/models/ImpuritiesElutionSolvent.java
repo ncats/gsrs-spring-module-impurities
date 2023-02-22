@@ -1,5 +1,6 @@
 package gov.hhs.gsrs.impurities.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import gsrs.GsrsEntityProcessorListener;
 import gsrs.model.AbstractGsrsEntity;
 import gsrs.model.AbstractGsrsManualDirtyEntity;
@@ -15,6 +16,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,20 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Version;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.List;
@@ -45,32 +35,20 @@ import java.util.ArrayList;
 @SingleParent
 @Data
 @Entity
-@Table(name="SRSCID_IMPURITIES_INORGANIC")
-public class ImpuritiesInorganic extends ImpuritiesCommonData {
+@Table(name="SRSCID_IMPURITIES_ELUTION")
+public class ImpuritiesElutionSolvent extends ImpuritiesCommonData {
 
     @Id
-    @SequenceGenerator(name = "impInorgSeq", sequenceName = "SRSCID_SQ_IMPURITIES_INORG_ID", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "impInorgSeq")
+    @SequenceGenerator(name = "impElutionSeq", sequenceName = "SRSCID_SQ_IMPURITIES_ELUT_ID", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "impElutionSeq")
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "RELATED_SUBSTANCE_UUID")
-    public String relatedSubstanceUuid;
+    @Column(name = "ELUTION_SOLVENT")
+    public String elutionSolvent;
 
-    @Column(name = "TEST_TYPE")
-    public String testType;
-
-    @Column(name = "LIMIT_VALUE")
-    public String limitValue;
-
-    @Column(name = "LIMIT_TYPE")
-    public String limitType;
-
-    @Column(name = "UNIT")
-    public String unit;
-
-    @Column(name = "COMMENTS")
-    public String comments;
+    @Column(name = "ELUTION_SOLVENT_CODE")
+    public String elutionSolventCode;
 
     /*
     @Version
@@ -97,30 +75,18 @@ public class ImpuritiesInorganic extends ImpuritiesCommonData {
     private Date lastModifiedDate;
     */
 
+    // Set PARENT Class, ImpuritiesTesting
     @Indexable(indexed=false)
     @ParentReference
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="INORGANIC_TEST_ID")
-    public ImpuritiesInorganicTest owner;
+    @JoinColumn(name="IMPURITIES_TEST_ID")
+    public ImpuritiesTesting owner;
 
-    public void setOwner(ImpuritiesInorganicTest impuritiesInorganicTest) {
-        this.owner = impuritiesInorganicTest;
+    // Set PARENT Class, ImpuritiesTesting
+    public void setOwner(ImpuritiesTesting impuritiesTesting) {
+        this.owner = impuritiesTesting;
     }
-
-    /*
-    @Indexable(indexed=false)
-    @ParentReference
-    @EqualsAndHashCode.Exclude
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="IMPURITIES_SUBSTANCE_ID")
-    public ImpuritiesSubstance owner;
-
-    public void setOwner(ImpuritiesSubstance impuritiesSubstance) {
-        this.owner = impuritiesSubstance;
-    }
-    */
 
 }
