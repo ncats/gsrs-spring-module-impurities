@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @MappedSuperclass
-public class ImpuritiesCommanData extends AbstractGsrsEntity implements ForceUpdateDirtyMakerMixin{
+public class ImpuritiesCommonData extends AbstractGsrsEntity implements ForceUpdateDirtyMakerMixin{
 
     @Indexable(facet = true, name = "Record Created By")
     @Column(name = "CREATED_BY")
@@ -48,7 +48,7 @@ public class ImpuritiesCommanData extends AbstractGsrsEntity implements ForceUpd
     @Column(name = "INTERNAL_VERSION")
     public Long internalVersion;
 
-    public ImpuritiesCommanData () {
+    public ImpuritiesCommonData () {
     }
 
     public String getCreatedBy () {

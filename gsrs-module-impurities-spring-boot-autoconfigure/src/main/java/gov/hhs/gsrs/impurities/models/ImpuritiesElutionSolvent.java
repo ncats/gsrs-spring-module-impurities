@@ -36,7 +36,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_ELUTION")
-public class ImpuritiesElutionSolvent extends AbstractGsrsEntity {
+public class ImpuritiesElutionSolvent extends ImpuritiesCommonData {
 
     @Id
     @SequenceGenerator(name = "impElutionSeq", sequenceName = "SRSCID_SQ_IMPURITIES_ELUT_ID", allocationSize = 1)
@@ -50,6 +50,7 @@ public class ImpuritiesElutionSolvent extends AbstractGsrsEntity {
     @Column(name = "ELUTION_SOLVENT_CODE")
     public String elutionSolventCode;
 
+    /*
     @Version
     public Long internalVersion;
 
@@ -72,7 +73,8 @@ public class ImpuritiesElutionSolvent extends AbstractGsrsEntity {
     @Indexable( name = "Last Modified Date", sortable=true)
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
-
+    */
+    
     // Set PARENT Class, ImpuritiesTesting
     @Indexable(indexed=false)
     @ParentReference

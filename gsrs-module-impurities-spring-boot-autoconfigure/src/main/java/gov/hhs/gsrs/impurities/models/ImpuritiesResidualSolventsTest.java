@@ -35,7 +35,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_RESIDU_TEST")
-public class ImpuritiesResidualSolventsTest extends ImpuritiesCommanData {
+public class ImpuritiesResidualSolventsTest extends ImpuritiesCommonData {
 
     @Id
     @SequenceGenerator(name = "impResTestSeq", sequenceName = "SRSCID_SQ_IMPURITIES_R_TEST_ID", allocationSize = 1)
