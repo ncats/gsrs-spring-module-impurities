@@ -54,7 +54,7 @@ public class ImpuritiesExporterFactory implements ExporterFactory {
 		}
 
 		SpreadsheetFormat format = SpreadsheetFormat.XLSX;
-		Spreadsheet spreadsheet = format.createSpeadsheet(out);
+		Spreadsheet spreadsheet = format.createSpreadsheet(out);
 
 		ImpuritiesExporter.Builder builder = new ImpuritiesExporter.Builder(spreadsheet);
 		configure(builder, params);
