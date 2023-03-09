@@ -1,5 +1,6 @@
 package gov.hhs.gsrs.impurities.controllers;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import gov.hhs.gsrs.impurities.models.*;
 import gov.hhs.gsrs.impurities.services.*;
 import gov.hhs.gsrs.impurities.LegacyImpuritiesSearcher;
@@ -105,13 +106,6 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
     }
 
     @PreAuthorize("isAuthenticated()")
-<<<<<<< HEAD:gsrs-module-impurities-spring-boot-autoconfigure/src/main/java/gov/nih/ncats/impurities/controllers/ImpuritiesController.java
-    @GetGsrsRestApiMapping("/export/{etagId}/{format}")
-    public ResponseEntity<Object> createExport(@PathVariable("etagId") String etagId, @PathVariable("format") String format,
-                                               @RequestParam(value = "publicOnly", required = false) Boolean publicOnlyObj, @RequestParam(value ="filename", required= false) String fileName,
-                                               Principal prof,
-                                               @RequestParam Map<String, String> parameters) throws Exception {
-=======
    // @GetGsrsRestApiMapping("/export/{etagId}/{format}")
     public ResponseEntity<Object> createExport(@PathVariable("etagId") String etagId,
                                                @PathVariable("format") String format,
@@ -122,7 +116,6 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
                                                HttpServletRequest request
 
     ) throws Exception {
->>>>>>> starter:gsrs-module-impurities-spring-boot-autoconfigure/src/main/java/gov/hhs/gsrs/impurities/controllers/ImpuritiesController.java
         Optional<ETag> etagObj = eTagRepository.findByEtag(etagId);
 
         boolean publicOnly = publicOnlyObj==null? true: publicOnlyObj;
@@ -133,11 +126,7 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
 
         ExportMetaData emd=new ExportMetaData(etagId, etagObj.get().uri, prof.getName(), publicOnly, format);
 
-<<<<<<< HEAD:gsrs-module-impurities-spring-boot-autoconfigure/src/main/java/gov/nih/ncats/impurities/controllers/ImpuritiesController.java
-        Stream<Impurities> mstream = new EtagExportGenerator<Impurities>(entityManager, transactionManager).generateExportFrom(getEntityService().getContext(), etagObj.get()).get();
-=======
         Stream<Impurities> mstream = new EtagExportGenerator<Impurities>(entityManager, transactionManager, HttpRequestHolder.fromRequest(request)).generateExportFrom(getEntityService().getContext(), etagObj.get()).get();
->>>>>>> starter:gsrs-module-impurities-spring-boot-autoconfigure/src/main/java/gov/hhs/gsrs/impurities/controllers/ImpuritiesController.java
 
         Stream<Impurities> effectivelyFinalStream = filterStream(mstream, publicOnly, parameters);
 
@@ -154,7 +143,7 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
     }
 
     private Exporter<Impurities> getExporterFor(String extension, OutputStream pos, boolean publicOnly, Map<String, String> parameters) throws IOException {
-        ExporterFactory.Parameters params = this.createParamters(extension, publicOnly, parameters);
+        ExporterFactory.Parameters params = this.createParameters(extension, publicOnly, parameters, JsonNodeFactory.instance.objectNode());
         ExporterFactory<Impurities> factory = this.gsrsExportConfiguration.getExporterFor(this.getEntityService().getContext(), params);
         if (factory == null) {
             throw new IllegalArgumentException("could not find suitable factory for " + params);
