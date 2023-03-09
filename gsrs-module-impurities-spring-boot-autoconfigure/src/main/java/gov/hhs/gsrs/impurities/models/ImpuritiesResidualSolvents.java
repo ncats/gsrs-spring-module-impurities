@@ -46,7 +46,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_RESIDUAL")
-public class ImpuritiesResidualSolvents extends AbstractGsrsEntity {
+public class ImpuritiesResidualSolvents extends ImpuritiesCommonData {
 
     @Id
     @SequenceGenerator(name = "impResSeq", sequenceName = "SRSCID_SQ_IMPURITIES_RESIDU_ID", allocationSize = 1)
@@ -75,6 +75,7 @@ public class ImpuritiesResidualSolvents extends AbstractGsrsEntity {
     @Column(name = "COMMENTS")
     public String comments;
 
+    /*
     @Version
     public Long internalVersion;
 
@@ -97,7 +98,9 @@ public class ImpuritiesResidualSolvents extends AbstractGsrsEntity {
     @Indexable( name = "Last Modified Date", sortable=true)
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
+    */
 
+    /*
     @Indexable(indexed=false)
     @ParentReference
     @EqualsAndHashCode.Exclude
@@ -108,6 +111,19 @@ public class ImpuritiesResidualSolvents extends AbstractGsrsEntity {
 
     public void setOwner(ImpuritiesSubstance impuritiesSubstance) {
         this.owner = impuritiesSubstance;
+    }
+    */
+
+    @Indexable(indexed=false)
+    @ParentReference
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="RESIDUAL_TEST_ID")
+    public ImpuritiesResidualSolventsTest owner;
+
+    public void setOwner(ImpuritiesResidualSolventsTest impuritiesResidualSolventsTest) {
+        this.owner = impuritiesResidualSolventsTest;
     }
 
     /*

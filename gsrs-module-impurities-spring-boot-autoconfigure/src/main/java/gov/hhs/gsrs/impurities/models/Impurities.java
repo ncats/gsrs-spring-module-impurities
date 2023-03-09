@@ -41,7 +41,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES")
-public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMakerMixin {
+public class Impurities extends ImpuritiesCommonData {
 
     @Id
     @SequenceGenerator(name = "impSeq", sequenceName = "SRSCID_SQ_IMPURITIES_ID", allocationSize = 1)
@@ -49,32 +49,44 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     @Column(name = "ID")
     public Long id;
 
-    @Indexable(facet = true, name = "Source Type")
+    @Indexable(facet = true, name = "Source Type", sortable = true)
     @Column(name = "SOURCE_TYPE")
     public String sourceType;
 
-    @Indexable(facet = true, name = "Source")
+    @Indexable(facet = true, name = "Source", sortable = true)
     @Column(name = "SOURCE")
     public String source;
 
+    @Indexable(sortable = true)
     @Column(name = "SOURCE_ID")
     public String sourceId;
 
+    @Indexable(sortable = true)
     @Column(name = "TYPE")
     public String type;
 
+    @Indexable(sortable = true)
     @Column(name = "SPEC_TYPE")
     public String specType;
 
+    @Indexable(sortable = true)
     @Column(name = "COMPANY_PRODUCT_NAME")
-    public String companyProductName;
+    public String productSubstanceName;
 
+    @Indexable(sortable = true)
     @Column(name = "COMPANY_NAME")
-    public String companyName;
+    public String submitterName;
 
     @Column(name = "PRODUCT_ID")
     public String productId;
 
+    @Column(name = "DATE_TYPE")
+    public String dateType;
+
+    @Column(name = "DATE_TYPE_DATE")
+    private Date dateTypeDate;
+
+    /*
     @Version
     public Long internalVersion;
 
@@ -97,6 +109,7 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     @Indexable(name = "Last Modified Date", sortable = true)
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
+    */
 
     public Long getId() {
         return this.id;
@@ -107,10 +120,6 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     public String getDeprecated() {
         return "Not Deprecated";
     }
-
-  //  @JoinColumn(name = "IMPURITIES_ID", referencedColumnName = "ID")
-   // @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   // public List<ImpuritiesSubstance> impuritiesSubstanceList = new ArrayList<ImpuritiesSubstance>();
 
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -127,12 +136,12 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
         }
     }
 
-    // @LazyCollection(LazyCollectionOption.FALSE)
     @Basic(fetch = FetchType.LAZY)
     @JoinColumn(name = "IMPURITIES_TOTAL_ID", referencedColumnName = "ID")
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public ImpuritiesTotal impuritiesTotal;
 
+    /*
     @PrePersist
     public void prePersist() {
         try {
@@ -180,5 +189,45 @@ public class Impurities extends AbstractGsrsEntity implements ForceUpdateDirtyMa
     public Date getLastModifiedDate() {
         return this.lastModifiedDate;
     }
+    */
 
+    public String getDateTypeDate() {
+        //Convert Date to String, get from database
+        return convertDateToString(this.dateTypeDate);
+    }
+
+    public void setDateTypeDate(String dateTypeDate) {
+        //Convert String to Date, store into database
+        this.dateTypeDate = convertStringToDate(dateTypeDate);
+    }
+
+    public String convertDateToString(Date dtDate) {
+
+        String strDate = null;
+        try {
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            if (dtDate != null) {
+                strDate = df.format(dtDate);
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return strDate;
+    }
+
+    public Date convertStringToDate(String strDate) {
+
+        Date dtDate = null;
+        try {
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            if ((strDate != null) && (strDate.length() > 0)) {
+                dtDate = df.parse(strDate);
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return dtDate;
+    }
 }

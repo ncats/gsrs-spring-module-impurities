@@ -15,6 +15,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,20 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Version;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.List;
@@ -45,29 +34,32 @@ import java.util.ArrayList;
 @SingleParent
 @Data
 @Entity
-@Table(name="SRSCID_IMPURITIES_INORGANIC")
-public class ImpuritiesInorganic extends ImpuritiesCommonData {
+@Table(name="SRSCID_IMPURITIES_INORGAN_TEST")
+public class ImpuritiesInorganicTest extends ImpuritiesCommonData {
 
     @Id
-    @SequenceGenerator(name = "impInorgSeq", sequenceName = "SRSCID_SQ_IMPURITIES_INORG_ID", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "impInorgSeq")
+    @SequenceGenerator(name = "impInorganicTestSeq", sequenceName = "SRSCID_SQ_IMPURITIES_I_TEST_ID", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "impInorganicTestSeq")
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "RELATED_SUBSTANCE_UUID")
-    public String relatedSubstanceUuid;
+    @Column(name = "SOURCE_TYPE")
+    public String sourceType;
+
+    @Column(name = "SOURCE")
+    public String source;
+
+    @Column(name = "SOURCE_ID")
+    public String sourceId;
+
+    @Column(name = "TEST")
+    public String test;
 
     @Column(name = "TEST_TYPE")
     public String testType;
 
-    @Column(name = "LIMIT_VALUE")
-    public String limitValue;
-
-    @Column(name = "LIMIT_TYPE")
-    public String limitType;
-
-    @Column(name = "UNIT")
-    public String unit;
+    @Column(name = "TEST_DESCRIPTION")
+    public String testDescription;
 
     @Column(name = "COMMENTS")
     public String comments;
@@ -97,19 +89,7 @@ public class ImpuritiesInorganic extends ImpuritiesCommonData {
     private Date lastModifiedDate;
     */
 
-    @Indexable(indexed=false)
-    @ParentReference
-    @EqualsAndHashCode.Exclude
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="INORGANIC_TEST_ID")
-    public ImpuritiesInorganicTest owner;
-
-    public void setOwner(ImpuritiesInorganicTest impuritiesInorganicTest) {
-        this.owner = impuritiesInorganicTest;
-    }
-
-    /*
+    // Set PARENT Class, ImpuritiesSubstance
     @Indexable(indexed=false)
     @ParentReference
     @EqualsAndHashCode.Exclude
@@ -118,9 +98,25 @@ public class ImpuritiesInorganic extends ImpuritiesCommonData {
     @JoinColumn(name="IMPURITIES_SUBSTANCE_ID")
     public ImpuritiesSubstance owner;
 
+    // Set PARENT Class, ImpuritiesSubstance
     public void setOwner(ImpuritiesSubstance impuritiesSubstance) {
         this.owner = impuritiesSubstance;
     }
-    */
 
+    // Set CHILDREN Class, ImpuritiesInorganic
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<ImpuritiesInorganic> impuritiesInorganicList = new ArrayList<ImpuritiesInorganic>();
+
+    // Set CHILDREN Class, ImpuritiesInorganic
+    public void setImpuritiesInorganicList(List<ImpuritiesInorganic> impuritiesInorganicList) {
+        this.impuritiesInorganicList = impuritiesInorganicList;
+        if(impuritiesInorganicList !=null) {
+            for (ImpuritiesInorganic imp : impuritiesInorganicList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
 }

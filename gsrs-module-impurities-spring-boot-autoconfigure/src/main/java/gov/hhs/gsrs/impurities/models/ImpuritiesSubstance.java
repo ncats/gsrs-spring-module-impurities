@@ -36,7 +36,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_SUBSTANCE")
-public class ImpuritiesSubstance extends AbstractGsrsEntity {
+public class ImpuritiesSubstance extends ImpuritiesCommonData {
 
     @Id
     @SequenceGenerator(name = "impSubSeq", sequenceName = "SRSCID_SQ_IMPURITIES_SUBS_ID", allocationSize = 1)
@@ -47,6 +47,10 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
     @Indexable
     @Column(name = "SUBSTANCE_UUID")
     public String substanceUuid;
+
+    @Indexable
+    @Column(name = "APPROVAL_ID")
+    public String approvalID;
 
     @Column(name="LOW")
     public Double low;
@@ -60,29 +64,7 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
     @Column(name="COMMENTS")
     public String comments;
 
-    @Version
-    public Long internalVersion;
-
-    @Column(name = "CREATED_BY")
-    public String createdBy;
-
-    @Column(name = "MODIFIED_BY")
-    public String modifiedBy;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @CreatedDate
-    @Indexable( name = "Create Date", sortable=true)
-    @Column(name = "CREATE_DATE")
-    private Date creationDate;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @LastModifiedDate
-    @Indexable( name = "Last Modified Date", sortable=true)
-    @Column(name = "MODIFY_DATE")
-    private Date lastModifiedDate;
-
+    // Set PARENT Class, Impurities
     @Indexable(indexed=false)
     @ParentReference
     @EqualsAndHashCode.Exclude
@@ -91,22 +73,21 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
     @JoinColumn(name="IMPURITIES_ID")
     public Impurities owner;
 
+    // Set PARENT Class, Impurities
     public void setOwner(Impurities impurities) {
         this.owner = impurities;
     }
 
-  //  @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
-  //  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  //  public List<ImpuritiesTesting> impuritiesTestList = new ArrayList<ImpuritiesTesting>();
-
+    // Set Children Class, ImpuritiesTesting
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesTesting> impuritiesTestList = new ArrayList<ImpuritiesTesting>();
 
+    // Set Children Class, ImpuritiesTesting
     public void setImpuritiesTestList(List<ImpuritiesTesting> impuritiesTestList) {
         this.impuritiesTestList = impuritiesTestList;
-        if(impuritiesTestList !=null) {
+        if (impuritiesTestList !=null) {
             for (ImpuritiesTesting imp : impuritiesTestList)
             {
                 imp.setOwner(this);
@@ -114,11 +95,41 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
         }
     }
 
-   // @LazyCollection(LazyCollectionOption.FALSE)
-  //  @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
-  //  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  //  public List<ImpuritiesResidualSolvents> impuritiesResidualSolventsList = new ArrayList<ImpuritiesResidualSolvents>();
+    // Set Children Class, ImpuritiesResidualSolventsTest
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<ImpuritiesResidualSolventsTest> impuritiesResidualSolventsTestList = new ArrayList<ImpuritiesResidualSolventsTest>();
 
+    // Set Children Class, ImpuritiesResidualSolventsTest
+    public void setImpuritiesResidualSolventsTestList(List<ImpuritiesResidualSolventsTest> impuritiesResidualSolventsTestList) {
+        this.impuritiesResidualSolventsTestList = impuritiesResidualSolventsTestList;
+        if (impuritiesResidualSolventsTestList != null) {
+            for (ImpuritiesResidualSolventsTest imp : impuritiesResidualSolventsTestList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
+    // Set Children Class, ImpuritiesInorganicTest
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<ImpuritiesInorganicTest> impuritiesInorganicTestList = new ArrayList<ImpuritiesInorganicTest>();
+
+    // Set Children Class, ImpuritiesInorganicTest
+    public void setImpuritiesInorganicTestList(List<ImpuritiesInorganicTest> impuritiesInorganicTestList) {
+        this.impuritiesInorganicTestList = impuritiesInorganicTestList;
+        if (impuritiesInorganicTestList != null) {
+            for (ImpuritiesInorganicTest imp : impuritiesInorganicTestList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
+    /*
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
@@ -148,23 +159,5 @@ public class ImpuritiesSubstance extends AbstractGsrsEntity {
             }
         }
     }
-
-  //  @LazyCollection(LazyCollectionOption.FALSE)
-  //  @JoinColumn(name = "IMPURITIES_SUBSTANCE_ID", referencedColumnName = "ID")
-  //  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   // public List<ImpuritiesInorganic> impuritiesInorganicList = new ArrayList<ImpuritiesInorganic>();
-
-    /*
-    @Transient
-    @JsonProperty("_substanceKey")
-    public String _substanceKey;
-
-    @Transient
-    @JsonProperty("_approvalID")
-    public String _approvalID;
-
-    @Transient
-    @JsonProperty("_name")
-    public String _name;
     */
 }

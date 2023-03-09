@@ -48,7 +48,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name="SRSCID_IMPURITIES_DETAILS")
-public class ImpuritiesDetails extends AbstractGsrsEntity {
+public class ImpuritiesDetails extends ImpuritiesCommonData {
 
     @Id
     @SequenceGenerator(name = "impDetSeq", sequenceName = "SRSCID_SQ_IMPURITIES_DETAIL_ID", allocationSize = 1)
@@ -56,6 +56,7 @@ public class ImpuritiesDetails extends AbstractGsrsEntity {
     @Column(name = "ID")
     public Long id;
 
+    @Indexable
     @Column(name = "RELATED_SUBSTANCE_UUID")
     public String relatedSubstanceUuid;
 
@@ -80,6 +81,7 @@ public class ImpuritiesDetails extends AbstractGsrsEntity {
     @Column(name = "UNIT")
     public String unit;
 
+    /*
     @Version
     public Long internalVersion;
 
@@ -102,13 +104,6 @@ public class ImpuritiesDetails extends AbstractGsrsEntity {
     @Indexable( name = "Last Modified Date", sortable=true)
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
-
-    /*
-    @Indexable(indexed=false)
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="IMPURITIES_TEST_ID")
-    public ImpuritiesTesting impuritiesTest;
     */
 
     @Indexable(indexed=false)
@@ -122,12 +117,6 @@ public class ImpuritiesDetails extends AbstractGsrsEntity {
     public void setOwner(ImpuritiesTesting impuritiesTesting) {
         this.owner = impuritiesTesting;
     }
-
-    /*
-    @JoinColumn(name = "IMPURITIES_DETAILS_ID", referencedColumnName = "ID")
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    public List<ImpuritiesIdentityCriteria> identityCriteriaList = new ArrayList<ImpuritiesIdentityCriteria>();
-    */
 
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
