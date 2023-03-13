@@ -1,5 +1,6 @@
 package gov.hhs.gsrs.impurities.controllers;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import gov.hhs.gsrs.impurities.models.*;
 import gov.hhs.gsrs.impurities.services.*;
 import gov.hhs.gsrs.impurities.LegacyImpuritiesSearcher;
@@ -143,7 +144,7 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
     }
 
     private Exporter<Impurities> getExporterFor(String extension, OutputStream pos, boolean publicOnly, Map<String, String> parameters) throws IOException {
-        ExporterFactory.Parameters params = this.createParamters(extension, publicOnly, parameters);
+        ExporterFactory.Parameters params = this.createParameters(extension, publicOnly, parameters, JsonNodeFactory.instance.objectNode());
         ExporterFactory<Impurities> factory = this.gsrsExportConfiguration.getExporterFor(this.getEntityService().getContext(), params);
         if (factory == null) {
             throw new IllegalArgumentException("could not find suitable factory for " + params);
