@@ -86,6 +86,12 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "COLUMN_SIZE")
     public String columnSize;
 
+    @Column(name = "COLUMN_TEMPERATURE")
+    public String columnTemperature;
+
+    @Column(name = "FLOW_RATE")
+    public String flowRate;
+
     @Column(name = "INJECTION_VOLUME_AMOUNT")
     public String injectionVolumeAmount;
 
@@ -111,7 +117,7 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
 
     @Column(name = "ELUTION_TYPE")
     public String elutionType;
-    
+
     // Set PARENT Class, ImpuritiesSubstance
     @Indexable(indexed=false)
     @ParentReference
