@@ -44,36 +44,11 @@ public class ImpuritiesElutionSolvent extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "ELUTION_SOLVENT")
+    @Column(name = "ELUTION_SOLVENT", length=500)
     public String elutionSolvent;
 
-    @Column(name = "ELUTION_SOLVENT_CODE")
+    @Column(name = "ELUTION_SOLVENT_CODE", length=100)
     public String elutionSolventCode;
-
-    /*
-    @Version
-    public Long internalVersion;
-
-    @Column(name = "CREATED_BY")
-    public String createdBy;
-
-    @Column(name = "MODIFIED_BY")
-    public String modifiedBy;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @CreatedDate
-    @Indexable( name = "Create Date", sortable=true)
-    @Column(name = "CREATE_DATE")
-    private Date creationDate;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @LastModifiedDate
-    @Indexable( name = "Last Modified Date", sortable=true)
-    @Column(name = "MODIFY_DATE")
-    private Date lastModifiedDate;
-    */
 
     // Set PARENT Class, ImpuritiesTesting
     @Indexable(indexed=false)

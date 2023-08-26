@@ -53,43 +53,18 @@ public class ImpuritiesTotal extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "TEST_TYPE")
+    @Column(name = "TEST_TYPE", length=500)
     public String testType;
 
-    @Column(name = "LIMIT_VALUE")
+    @Column(name = "LIMIT_VALUE", length=500)
     public String limitValue;
 
-    @Column(name = "LIMIT_TYPE")
+    @Column(name = "LIMIT_TYPE", length=500)
     public String limitType;
 
-    @Column(name = "AMOUNT_VALUE")
+    @Column(name = "AMOUNT_VALUE", length=500)
     public String amountValue;
 
-    @Column(name = "COMMENTS")
+    @Column(name = "COMMENTS", length=4000)
     public String comments;
-
-    /*
-    @Version
-    public Long internalVersion;
-
-    @Column(name = "CREATED_BY")
-    public String createdBy;
-
-    @Column(name = "MODIFIED_BY")
-    public String modifiedBy;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @CreatedDate
-    @Indexable( name = "Create Date", sortable=true)
-    @Column(name = "CREATE_DATE")
-    private Date creationDate;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @LastModifiedDate
-    @Indexable( name = "Last Modified Date", sortable=true)
-    @Column(name = "MODIFY_DATE")
-    private Date lastModifiedDate;
-    */
 }

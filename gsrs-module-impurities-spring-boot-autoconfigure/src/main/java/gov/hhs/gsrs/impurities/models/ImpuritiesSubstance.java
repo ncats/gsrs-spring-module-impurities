@@ -45,11 +45,11 @@ public class ImpuritiesSubstance extends ImpuritiesCommonData {
     public Long id;
 
     @Indexable
-    @Column(name = "SUBSTANCE_UUID")
+    @Column(name = "SUBSTANCE_UUID", length=500)
     public String substanceUuid;
 
     @Indexable
-    @Column(name = "APPROVAL_ID")
+    @Column(name = "APPROVAL_ID", length=100)
     public String approvalID;
 
     @Column(name="LOW")
@@ -58,10 +58,10 @@ public class ImpuritiesSubstance extends ImpuritiesCommonData {
     @Column(name="HIGH")
     public Double high;
 
-    @Column(name="UNIT")
+    @Column(name="UNIT", length=500)
     public String unit;
 
-    @Column(name="COMMENTS")
+    @Column(name="COMMENTS", length=4000)
     public String comments;
 
     // Set PARENT Class, Impurities
@@ -128,36 +128,4 @@ public class ImpuritiesSubstance extends ImpuritiesCommonData {
             }
         }
     }
-
-    /*
-    @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
-    public List<ImpuritiesResidualSolvents> impuritiesResidualSolventsList = new ArrayList<ImpuritiesResidualSolvents>();
-
-    public void setImpuritiesResidualSolventsList(List<ImpuritiesResidualSolvents> impuritiesResidualSolventsList) {
-        this.impuritiesResidualSolventsList = impuritiesResidualSolventsList;
-        if(impuritiesResidualSolventsList !=null) {
-            for (ImpuritiesResidualSolvents imp : impuritiesResidualSolventsList)
-            {
-                imp.setOwner(this);
-            }
-        }
-    }
-
-    @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
-    public List<ImpuritiesInorganic> impuritiesInorganicList = new ArrayList<ImpuritiesInorganic>();
-
-    public void setImpuritiesInorganicList(List<ImpuritiesInorganic> impuritiesInorganicList) {
-        this.impuritiesInorganicList = impuritiesInorganicList;
-        if(impuritiesInorganicList !=null) {
-            for (ImpuritiesInorganic imp : impuritiesInorganicList)
-            {
-                imp.setOwner(this);
-            }
-        }
-    }
-    */
 }

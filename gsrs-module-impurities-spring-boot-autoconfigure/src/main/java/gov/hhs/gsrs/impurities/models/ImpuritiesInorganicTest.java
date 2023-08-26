@@ -43,51 +43,26 @@ public class ImpuritiesInorganicTest extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "SOURCE_TYPE")
+    @Column(name = "SOURCE_TYPE", length=500)
     public String sourceType;
 
-    @Column(name = "SOURCE")
+    @Column(name = "SOURCE", length=500)
     public String source;
 
-    @Column(name = "SOURCE_ID")
+    @Column(name = "SOURCE_ID", length=500)
     public String sourceId;
 
-    @Column(name = "TEST")
+    @Column(name = "TEST", length=1000)
     public String test;
 
-    @Column(name = "TEST_TYPE")
+    @Column(name = "TEST_TYPE", length=500)
     public String testType;
 
-    @Column(name = "TEST_DESCRIPTION")
+    @Column(name = "TEST_DESCRIPTION", length=4000)
     public String testDescription;
 
-    @Column(name = "COMMENTS")
+    @Column(name = "COMMENTS", length=4000)
     public String comments;
-
-    /*
-    @Version
-    public Long internalVersion;
-
-    @Column(name = "CREATED_BY")
-    public String createdBy;
-
-    @Column(name = "MODIFIED_BY")
-    public String modifiedBy;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @CreatedDate
-    @Indexable( name = "Create Date", sortable=true)
-    @Column(name = "CREATE_DATE")
-    private Date creationDate;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @LastModifiedDate
-    @Indexable( name = "Last Modified Date", sortable=true)
-    @Column(name = "MODIFY_DATE")
-    private Date lastModifiedDate;
-    */
 
     // Set PARENT Class, ImpuritiesSubstance
     @Indexable(indexed=false)
