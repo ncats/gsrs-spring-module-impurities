@@ -56,48 +56,23 @@ public class ImpuritiesUnspecified extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "IMPURITY_TYPE")
+    @Column(name = "IMPURITY_TYPE", length=500)
     public String impurityType;
 
-    @Column(name = "TEST_TYPE")
+    @Column(name = "TEST_TYPE", length=500)
     public String testType;
 
-    @Column(name = "LIMIT_VALUE")
+    @Column(name = "LIMIT_VALUE", length=500)
     public String limitValue;
 
-    @Column(name = "LIMIT_TYPE")
+    @Column(name = "LIMIT_TYPE", length=500)
     public String limitType;
 
-    @Column(name = "UNIT")
+    @Column(name = "UNIT", length=500)
     public String unit;
 
-    @Column(name = "COMMENTS")
+    @Column(name = "COMMENTS", length=4000)
     public String comments;
-
-    /*
-    @Version
-    public Long internalVersion;
-
-    @Column(name = "CREATED_BY")
-    public String createdBy;
-
-    @Column(name = "MODIFIED_BY")
-    public String modifiedBy;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @CreatedDate
-    @Indexable( name = "Create Date", sortable=true)
-    @Column(name = "CREATE_DATE")
-    private Date creationDate;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @LastModifiedDate
-    @Indexable( name = "Last Modified Date", sortable=true)
-    @Column(name = "MODIFY_DATE")
-    private Date lastModifiedDate;
-    */
 
     // Set PARENT Class, ImpuritiesTesting
     @Indexable(indexed=false)

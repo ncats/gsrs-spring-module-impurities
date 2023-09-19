@@ -58,7 +58,7 @@ public class SubstanceRelationship extends AbstractGsrsEntity {
     @Column(name="REF_UUID")
     public String relationshipUuid;
 
-    @Column(name="REF_PNAME")
+    @Column(name="REF_PNAME", length=1000)
     public String relationshipName;
 
     @Column(name="APPROVAL_ID")

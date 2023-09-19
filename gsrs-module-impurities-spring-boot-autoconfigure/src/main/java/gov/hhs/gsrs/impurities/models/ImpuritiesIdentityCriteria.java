@@ -54,42 +54,16 @@ public class ImpuritiesIdentityCriteria extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "IDENTITY_CRITERIA_TYPE")
+    @Column(name = "IDENTITY_CRITERIA_TYPE", length=500)
     public String identityCriteriaType;
 
-    @Column(name = "AMOUNT_VALUE")
+    @Column(name = "AMOUNT_VALUE", length=500)
     public String amountValue;
 
-    @Column(name = "UNIT")
+    @Column(name = "UNIT", length=500)
     public String unit;
 
-    /*
-    @Version
-    public Long internalVersion;
-
-    @Column(name = "CREATED_BY")
-    public String createdBy;
-
-    @Column(name = "MODIFIED_BY")
-    public String modifiedBy;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @CreatedDate
-    @Indexable( name = "Create Date", sortable=true)
-    @Column(name = "CREATE_DATE")
-    private Date creationDate;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @LastModifiedDate
-    @Indexable( name = "Last Modified Date", sortable=true)
-    @Column(name = "MODIFY_DATE")
-    private Date lastModifiedDate;
-    */
-
     @Indexable(indexed=false)
-   // @ParentReference
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -103,7 +77,6 @@ public class ImpuritiesIdentityCriteria extends ImpuritiesCommonData {
     }
 
     @Indexable(indexed=false)
-   // @ParentReference
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)

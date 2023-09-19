@@ -43,79 +43,79 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "TEST")
+    @Column(name = "TEST", length=1000)
     public String test;
 
-    @Column(name = "TEST_TYPE")
+    @Column(name = "TEST_TYPE", length=150)
     public String testType;
 
-    @Column(name = "TEST_DESCRIPTION")
+    @Column(name = "TEST_DESCRIPTION", length=4000)
     public String testDescription;
 
-    @Column(name = "COMMENTS")
+    @Column(name = "COMMENTS", length=4000)
     public String comments;
 
     // added following New 18 fields in 3.1
-    @Column(name = "SOURCE_TYPE")
+    @Column(name = "SOURCE_TYPE", length=500)
     public String sourceType;
 
-    @Column(name = "SOURCE")
+    @Column(name = "SOURCE", length=500)
     public String source;
 
-    @Column(name = "SOURCE_ID")
+    @Column(name = "SOURCE_ID", length=500)
     public String sourceId;
 
-    @Column(name = "TEST_SYSTEM ")
+    @Column(name = "TEST_SYSTEM", length=150)
     public String system;
 
-    @Column(name = "TEST_MODE")
+    @Column(name = "TEST_MODE", length=150)
     public String mode;
 
-    @Column(name = "DETECTION_TYPE")
+    @Column(name = "DETECTION_TYPE", length=150)
     public String detectionType;
 
-    @Column(name = "DETECTION_DETAILS")
+    @Column(name = "DETECTION_DETAILS", length=500)
     public String detectionDetails;
 
-    @Column(name = "COLUMN_PACKING_TYPE")
+    @Column(name = "COLUMN_PACKING_TYPE", length=150)
     public String columnPackingType;
 
-    @Column(name = "COLUMN_PACKING_SIZE")
+    @Column(name = "COLUMN_PACKING_SIZE", length=200)
     public String columnPackingSize;
 
-    @Column(name = "COLUMN_SIZE")
+    @Column(name = "COLUMN_SIZE", length=200)
     public String columnSize;
 
-    @Column(name = "COLUMN_TEMPERATURE")
+    @Column(name = "COLUMN_TEMPERATURE", length=200)
     public String columnTemperature;
 
-    @Column(name = "FLOW_RATE")
+    @Column(name = "FLOW_RATE", length=200)
     public String flowRate;
 
-    @Column(name = "INJECTION_VOLUME_AMOUNT")
+    @Column(name = "INJECTION_VOLUME_AMOUNT", length=200)
     public String injectionVolumeAmount;
 
-    @Column(name = "DILUENT")
+    @Column(name = "DILUENT", length=500)
     public String diluent;
 
-    @Column(name = "STANDARD_SOLUTION")
+    @Column(name = "STANDARD_SOLUTION", length=500)
     public String standardSolution;
 
-    @Column(name = "SAMPLE_SOLUTION")
+    @Column(name = "SAMPLE_SOLUTION", length=500)
     public String sampleSolution;
 
-    @Column(name = "SYSTEM_SUITABILITY_SOLUTION")
+    @Column(name = "SYSTEM_SUITABILITY_SOLUTION", length=500)
     public String systemSuitabilitySolution;
 
     // Suitability Requirements Resolution
-    @Column(name = "SUITABILITY_REQ_RESOLUTION")
+    @Column(name = "SUITABILITY_REQ_RESOLUTION", length=500)
     public String suitabilityReqResolution;
 
     // Suitability Requirements Relative Standard Deviation
-    @Column(name = "SUITABILITY_REQ_REL_STAND_DEV")
+    @Column(name = "SUITABILITY_REQ_REL_STAND_DEV", length=200)
     public String suitabilityReqRelStandardDeviation;
 
-    @Column(name = "ELUTION_TYPE")
+    @Column(name = "ELUTION_TYPE", length=200)
     public String elutionType;
 
     // Set PARENT Class, ImpuritiesSubstance
@@ -131,7 +131,6 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     public void setOwner(ImpuritiesSubstance impuritiesSubstance) {
         this.owner = impuritiesSubstance;
     }
-
 
     // Set CHILDREN Class, ImpuritiesElutionSolvent
     @ToString.Exclude

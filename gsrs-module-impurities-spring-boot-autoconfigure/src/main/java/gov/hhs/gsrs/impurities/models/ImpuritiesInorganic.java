@@ -54,48 +54,23 @@ public class ImpuritiesInorganic extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "RELATED_SUBSTANCE_UUID")
+    @Column(name = "RELATED_SUBSTANCE_UUID", length=500)
     public String relatedSubstanceUuid;
 
-    @Column(name = "TEST_TYPE")
+    @Column(name = "TEST_TYPE", length=500)
     public String testType;
 
-    @Column(name = "LIMIT_VALUE")
+    @Column(name = "LIMIT_VALUE", length=500)
     public String limitValue;
 
-    @Column(name = "LIMIT_TYPE")
+    @Column(name = "LIMIT_TYPE", length=500)
     public String limitType;
 
-    @Column(name = "UNIT")
+    @Column(name = "UNIT", length=500)
     public String unit;
 
-    @Column(name = "COMMENTS")
+    @Column(name = "COMMENTS", length=4000)
     public String comments;
-
-    /*
-    @Version
-    public Long internalVersion;
-
-    @Column(name = "CREATED_BY")
-    public String createdBy;
-
-    @Column(name = "MODIFIED_BY")
-    public String modifiedBy;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @CreatedDate
-    @Indexable( name = "Create Date", sortable=true)
-    @Column(name = "CREATE_DATE")
-    private Date creationDate;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @LastModifiedDate
-    @Indexable( name = "Last Modified Date", sortable=true)
-    @Column(name = "MODIFY_DATE")
-    private Date lastModifiedDate;
-    */
 
     @Indexable(indexed=false)
     @ParentReference
@@ -108,19 +83,5 @@ public class ImpuritiesInorganic extends ImpuritiesCommonData {
     public void setOwner(ImpuritiesInorganicTest impuritiesInorganicTest) {
         this.owner = impuritiesInorganicTest;
     }
-
-    /*
-    @Indexable(indexed=false)
-    @ParentReference
-    @EqualsAndHashCode.Exclude
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="IMPURITIES_SUBSTANCE_ID")
-    public ImpuritiesSubstance owner;
-
-    public void setOwner(ImpuritiesSubstance impuritiesSubstance) {
-        this.owner = impuritiesSubstance;
-    }
-    */
 
 }

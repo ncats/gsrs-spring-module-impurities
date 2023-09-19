@@ -50,66 +50,41 @@ public class Impurities extends ImpuritiesCommonData {
     public Long id;
 
     @Indexable(facet = true, name = "Source Type", sortable = true)
-    @Column(name = "SOURCE_TYPE")
+    @Column(name = "SOURCE_TYPE", length=500)
     public String sourceType;
 
     @Indexable(facet = true, name = "Source", sortable = true)
-    @Column(name = "SOURCE")
+    @Column(name = "SOURCE", length=500)
     public String source;
 
     @Indexable(sortable = true)
-    @Column(name = "SOURCE_ID")
+    @Column(name = "SOURCE_ID", length=500)
     public String sourceId;
 
     @Indexable(sortable = true)
-    @Column(name = "TYPE")
+    @Column(name = "TYPE", length=500)
     public String type;
 
     @Indexable(sortable = true)
-    @Column(name = "SPEC_TYPE")
+    @Column(name = "SPEC_TYPE", length=500)
     public String specType;
 
     @Indexable(sortable = true)
-    @Column(name = "COMPANY_PRODUCT_NAME")
+    @Column(name = "COMPANY_PRODUCT_NAME", length=500)
     public String productSubstanceName;
 
     @Indexable(sortable = true)
-    @Column(name = "COMPANY_NAME")
+    @Column(name = "COMPANY_NAME", length=500)
     public String submitterName;
 
-    @Column(name = "PRODUCT_ID")
+    @Column(name = "PRODUCT_ID", length=200)
     public String productId;
 
-    @Column(name = "DATE_TYPE")
+    @Column(name = "DATE_TYPE", length=500)
     public String dateType;
 
     @Column(name = "DATE_TYPE_DATE")
     private Date dateTypeDate;
-
-    /*
-    @Version
-    public Long internalVersion;
-
-    @Column(name = "CREATED_BY")
-    public String createdBy;
-
-    @Column(name = "MODIFIED_BY")
-    public String modifiedBy;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @CreatedDate
-    @Indexable(name = "Create Date", sortable = true)
-    @Column(name = "CREATE_DATE")
-    private Date creationDate;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @LastModifiedDate
-    @Indexable(name = "Last Modified Date", sortable = true)
-    @Column(name = "MODIFY_DATE")
-    private Date lastModifiedDate;
-    */
 
     public Long getId() {
         return this.id;
@@ -140,56 +115,6 @@ public class Impurities extends ImpuritiesCommonData {
     @JoinColumn(name = "IMPURITIES_TOTAL_ID", referencedColumnName = "ID")
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public ImpuritiesTotal impuritiesTotal;
-
-    /*
-    @PrePersist
-    public void prePersist() {
-        try {
-            UserProfile profile = (UserProfile) GsrsSecurityUtils.getCurrentUser();
-            if (profile != null) {
-                Principal p = profile.user;
-                if (p != null) {
-                    this.createdBy = p.username;
-                    this.modifiedBy = p.username;
-                }
-            }
-        }catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        try {
-            UserProfile profile = (UserProfile) GsrsSecurityUtils.getCurrentUser();
-            if (profile != null) {
-                Principal p = profile.user;
-                if (p != null) {
-                    this.modifiedBy = p.username;
-                }
-            }
-        }catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public String getCreatedBy () {
-        return this.createdBy;
-    }
-
-    public Date getCreationDate() {
-        //Get from Database
-        return this.creationDate;
-    }
-
-    public String getModifiedBy () {
-        return this.modifiedBy;
-    }
-
-    public Date getLastModifiedDate() {
-        return this.lastModifiedDate;
-    }
-    */
 
     public String getDateTypeDate() {
         //Convert Date to String, get from database
