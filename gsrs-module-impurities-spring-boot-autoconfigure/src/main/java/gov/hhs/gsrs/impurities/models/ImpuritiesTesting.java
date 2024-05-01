@@ -107,6 +107,15 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "SYSTEM_SUITABILITY_SOLUTION", length=500)
     public String systemSuitabilitySolution;
 
+    @Column(name = "OTHER_SOLUTION", length=2000)
+    public String otherSolution;
+
+    @Column(name = "SOLUTION_A_DESCRIPTION", length=2000)
+    public String solutionADescription;
+
+    @Column(name = "SOLUTION_B_DESCRIPTION", length=2000)
+    public String solutionBDescription;
+
     // Suitability Requirements Resolution
     @Column(name = "SUITABILITY_REQ_RESOLUTION", length=500)
     public String suitabilityReqResolution;
@@ -143,6 +152,23 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
         this.impuritiesElutionSolventList = impuritiesElutionSolventList;
         if (impuritiesElutionSolventList != null) {
             for (ImpuritiesElutionSolvent imp : impuritiesElutionSolventList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
+    // Set CHILDREN Class, ImpuritiesSolutionTable
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<ImpuritiesSolutionTable> impuritiesSolutionTableList = new ArrayList<ImpuritiesSolutionTable>();
+
+    // Set CHILDREN Class, ImpuritiesSolutionTable
+    public void setImpuritiesSolutionTableList(List<ImpuritiesSolutionTable> impuritiesSolutionTableList) {
+        this.impuritiesSolutionTableList = impuritiesSolutionTableList;
+        if (impuritiesSolutionTableList != null) {
+            for (ImpuritiesSolutionTable imp : impuritiesSolutionTableList)
             {
                 imp.setOwner(this);
             }
