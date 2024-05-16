@@ -35,55 +35,28 @@ import java.util.ArrayList;
 @SingleParent
 @Data
 @Entity
-@Table(name = "SRSCID_IMPURITIES_SOLUTION_TABLE")
-public class ImpuritiesSolutionTable extends ImpuritiesCommonData {
+@Table(name="SRSCID_IMPURITIES_SOLUTION")
+public class ImpuritiesSolution extends ImpuritiesCommonData {
 
     @Id
-    @SequenceGenerator(name = "impSolTableSeq", sequenceName = "SRSCID_SQ_IMPURITIES_SOL_TABLE_ID", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "impSolTableSeq")
+    @SequenceGenerator(name = "impSolSeq", sequenceName = "SRSCID_SQ_IMPURITIES_SOLUTION_ID", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "impSolSeq")
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "SOLUTION_TIME")
-    public String solutionTime;
+    @Column(name = "SOLUTION_DESCRIPTION", length=4000)
+    public String solutionDescription;
 
-    @Column(name = "SOLUTION_A_PERCENT")
-    public String solutionAPercent;
-
-    @Column(name = "SOLUTION_B_PERCENT")
-    public String solutionBPercent;
-
-    @Column(name = "SOLUTION_C_PERCENT")
-    public String solutionCPercent;
-
-    @Column(name = "SOLUTION_D_PERCENT")
-    public String solutionDPercent;
-
-    @Column(name = "SOLUTION_E_PERCENT")
-    public String solutionEPercent;
-
-    @Column(name = "SOLUTION_F_PERCENT")
-    public String solutionFPercent;
-
-    @Column(name = "SOLUTION_G_PERCENT")
-    public String solutionGPercent;
-
-    @Column(name = "SOLUTION_H_PERCENT")
-    public String solutionHPercent;
-
-    @Column(name = "SOLUTION_I_PERCENT")
-    public String solutionIPercent;
-
-    @Column(name = "SOLUTION_J_PERCENT")
-    public String solutionJPercent;
+    @Column(name = "SOLUTION_LETTER", length=4000)
+    public String solutionLetter;
 
     // Set PARENT Class, ImpuritiesTesting
-    @Indexable(indexed = false)
+    @Indexable(indexed=false)
     @ParentReference
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "IMPURITIES_TEST_ID")
+    @JoinColumn(name="IMPURITIES_TEST_ID")
     public ImpuritiesTesting owner;
 
     // Set PARENT Class, ImpuritiesTesting
