@@ -45,37 +45,37 @@ public class ImpuritiesSolutionTable extends ImpuritiesCommonData {
     public Long id;
 
     @Column(name = "SOLUTION_TIME")
-    public String solutionTime;
+    public Double solutionTime;
 
     @Column(name = "SOLUTION_A_PERCENT")
-    public String solutionAPercent;
+    public Double solutionAPercent;
 
     @Column(name = "SOLUTION_B_PERCENT")
-    public String solutionBPercent;
+    public Double solutionBPercent;
 
     @Column(name = "SOLUTION_C_PERCENT")
-    public String solutionCPercent;
+    public Double solutionCPercent;
 
     @Column(name = "SOLUTION_D_PERCENT")
-    public String solutionDPercent;
+    public Double solutionDPercent;
 
     @Column(name = "SOLUTION_E_PERCENT")
-    public String solutionEPercent;
+    public Double solutionEPercent;
 
     @Column(name = "SOLUTION_F_PERCENT")
-    public String solutionFPercent;
+    public Double solutionFPercent;
 
     @Column(name = "SOLUTION_G_PERCENT")
-    public String solutionGPercent;
+    public Double solutionGPercent;
 
     @Column(name = "SOLUTION_H_PERCENT")
-    public String solutionHPercent;
+    public Double solutionHPercent;
 
     @Column(name = "SOLUTION_I_PERCENT")
-    public String solutionIPercent;
+    public Double solutionIPercent;
 
     @Column(name = "SOLUTION_J_PERCENT")
-    public String solutionJPercent;
+    public Double solutionJPercent;
 
     // Set PARENT Class, ImpuritiesTesting
     @Indexable(indexed = false)

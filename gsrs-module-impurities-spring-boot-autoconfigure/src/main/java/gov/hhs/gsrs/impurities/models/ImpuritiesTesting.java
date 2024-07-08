@@ -154,6 +154,7 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
 
     // Set CHILDREN Class, ImpuritiesSolution
     @ToString.Exclude
+    @OrderBy("solution_letter asc")
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesSolution> impuritiesSolutionList = new ArrayList<ImpuritiesSolution>();
