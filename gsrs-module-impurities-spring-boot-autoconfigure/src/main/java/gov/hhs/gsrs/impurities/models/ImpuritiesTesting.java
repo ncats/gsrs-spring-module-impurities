@@ -49,10 +49,12 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "TEST_TYPE", length=150)
     public String testType;
 
-    @Column(name = "TEST_DESCRIPTION", length=4000)
+    @Column(name = "TEST_DESCRIPTION")
+    @Lob
     public String testDescription;
 
-    @Column(name = "COMMENTS", length=4000)
+    @Column(name = "COMMENTS")
+    @Lob
     public String comments;
 
     // added following New 18 fields in 3.1
