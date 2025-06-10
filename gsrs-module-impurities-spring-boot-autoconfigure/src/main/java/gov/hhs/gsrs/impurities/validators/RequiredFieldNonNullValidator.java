@@ -26,7 +26,7 @@ public class RequiredFieldNonNullValidator implements ValidatorPlugin<Impurities
     public void validate(Impurities objnew, Impurities objold, ValidatorCallback callback) {
         if (objnew.impuritiesSubstanceList.isEmpty()) {
             GinasProcessingMessage mes = GinasProcessingMessage
-                    .ERROR_MESSAGE("RequiredFieldNonNullValidatorError", "Must have at least one Substance");
+                    .ERROR_MESSAGE("Must have at least one Substance");
             callback.addMessage(mes);
         }
         Iterator<ImpuritiesSubstance> iter = objnew.impuritiesSubstanceList.iterator();
@@ -34,15 +34,15 @@ public class RequiredFieldNonNullValidator implements ValidatorPlugin<Impurities
             ImpuritiesSubstance s  = iter.next();
             if (s == null) {
                 callback.addMessage(GinasProcessingMessage
-                        .ERROR_MESSAGE("RequiredFieldNonNullValidatorError", "Must have at least one Substance"));
+                        .ERROR_MESSAGE("Must have at least one Substance"));
             }
             if (s.substanceUuid == null) {
                 callback.addMessage(GinasProcessingMessage
-                        .ERROR_MESSAGE("RequiredFieldNonNullValidatorNameError", "Substance Name is required"));
+                        .ERROR_MESSAGE("Substance Name is required"));
             }
             if (s.substanceUuid != null && s.substanceUuid.length() < 1) {
                 callback.addMessage(GinasProcessingMessage
-                        .ERROR_MESSAGE("RequiredFieldNonNullValidatorNameError", "Substance Name is required"));
+                        .ERROR_MESSAGE("Substance Name is required"));
             }
         }
     }
