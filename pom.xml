@@ -20,7 +20,7 @@
 
     <groupId>gov.nih.ncats</groupId>
     <artifactId>gsrs-module-impurities</artifactId>
-    <version>3.1.4-SNAPSHOT</version>
+    <version>3.2-SNAPSHOT</version>
     <name>GSRS Impurities Module</name>
     <description>GSRS Impurities Module for Spring Boot</description>
 
@@ -32,12 +32,12 @@
         <java.version>1.8</java.version>
         <spring-cloud.version>2021.0.8</spring-cloud.version>
         <lucene.version>4.10.0</lucene.version>
-        <gsrs.version>3.1.4-SNAPSHOT</gsrs.version>
-        <gsrs.impurities.version>3.1.4-SNAPSHOT</gsrs.impurities.version>
+        <gsrs.version>3.2-SNAPSHOT</gsrs.version>
+        <gsrs.impurities.version>3.2-SNAPSHOT</gsrs.impurities.version>
         <log4j2.version>2.17.1</log4j2.version>
         <spring-boot.version>2.7.18</spring-boot.version>
         <!-- TO BE REMOVED -->
-        <gsrs.substance.version>3.1.4-SNAPSHOT</gsrs.substance.version>
+        <gsrs.substance.version>3.2-SNAPSHOT</gsrs.substance.version>
     </properties>
 
 
