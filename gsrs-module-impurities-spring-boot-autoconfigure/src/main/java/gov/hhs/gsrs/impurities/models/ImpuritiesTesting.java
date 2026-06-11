@@ -67,6 +67,12 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "SOURCE_ID", length=500)
     public String sourceId;
 
+    @Column(name = "BUFFER", length=1000)
+    public String buffer;
+
+    @Column(name = "ELUTION_TYPE", length=200)
+    public String elutionType;
+
     @Column(name = "TEST_SYSTEM", length=150)
     public String system;
 
@@ -76,20 +82,26 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "DETECTION_TYPE", length=150)
     public String detectionType;
 
+    @Column(name = "DETECTOR_WAVELENGTH", length=100)
+    public String detectorWavelength;
+
     @Column(name = "DETECTION_DETAILS", length=500)
     public String detectionDetails;
-
-    @Column(name = "COLUMN_PACKING_TYPE", length=150)
-    public String columnPackingType;
-
-    @Column(name = "COLUMN_PACKING_SIZE", length=200)
-    public String columnPackingSize;
 
     @Column(name = "COLUMN_SIZE", length=200)
     public String columnSize;
 
+    @Column(name = "COLUMN_PACKING_SIZE", length=200)
+    public String columnPackingSize;
+
+    @Column(name = "COLUMN_PACKING_TYPE", length=150)
+    public String columnPackingType;
+
     @Column(name = "COLUMN_TEMPERATURE", length=200)
     public String columnTemperature;
+
+    @Column(name = "AUTOSAMPLER_TEMPERATURE", length=100)
+    public String autosamplerTemperature;
 
     @Column(name = "FLOW_RATE", length=200)
     public String flowRate;
@@ -100,28 +112,40 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "DILUENT", length=500)
     public String diluent;
 
+    @Column(name = "SYSTEM_SUITABILITY_SOLUTION", length=500)
+    public String systemSuitabilitySolution;
+
     @Column(name = "STANDARD_SOLUTION", length=500)
     public String standardSolution;
 
     @Column(name = "SAMPLE_SOLUTION", length=500)
     public String sampleSolution;
 
-    @Column(name = "SYSTEM_SUITABILITY_SOLUTION", length=500)
-    public String systemSuitabilitySolution;
+    @Column(name = "SENSITIVITY_SOLUTION", length=500)
+    public String sensitivitySolution;
 
     @Column(name = "OTHER_SOLUTION", length=2000)
     public String otherSolution;
 
-    // Suitability Requirements Resolution
+    // System Suitability SAMPLE
+    @Column(name = "SYSTEM_SUIT_SAMPLES", length=2000)
+    public String systemSuitabilitySample;
+
+    // System Suitability Requirements Resolution
     @Column(name = "SUITABILITY_REQ_RESOLUTION", length=500)
     public String suitabilityReqResolution;
 
-    // Suitability Requirements Relative Standard Deviation
+    // System Suitability Requirements Relative Standard Deviation
     @Column(name = "SUITABILITY_REQ_REL_STAND_DEV", length=200)
     public String suitabilityReqRelStandardDeviation;
 
-    @Column(name = "ELUTION_TYPE", length=200)
-    public String elutionType;
+    // System Suitability Requirements Trailing Factor
+    @Column(name = "SYSTEM_SUIT_REQ_TRAILING_FACTOR", length=2000)
+    public String systemSuitabilityReqTailingFactor;
+
+    // System Suitability Requirements Trailing Factor
+    @Column(name = "SYSTEM_SUIT_REQ_SIG_NOI_RATIO", length=2000)
+    public String systemSuitabilitySignalToNoiseRatio;
 
     // Set PARENT Class, ImpuritiesSubstance
     @Indexable(indexed=false)
@@ -183,6 +207,23 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
         this.impuritiesSolutionTableList = impuritiesSolutionTableList;
         if (impuritiesSolutionTableList != null) {
             for (ImpuritiesSolutionTable imp : impuritiesSolutionTableList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
+    // Set CHILDREN Class, ImpuritiesAnalysis
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<ImpuritiesAnalysis> impuritiesAnalysisList = new ArrayList<ImpuritiesAnalysis>();
+
+    // Set CHILDREN Class, ImpuritiesAnalysis
+    public void setImpuritiesAnalysisList(List<ImpuritiesAnalysis> impuritiesAnalysisList) {
+        this.impuritiesAnalysisList = impuritiesAnalysisList;
+        if (impuritiesAnalysisList != null) {
+            for (ImpuritiesAnalysis imp : impuritiesAnalysisList)
             {
                 imp.setOwner(this);
             }
