@@ -43,9 +43,11 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
+    @Indexable(suggest = true, facet = true, name = "Test", sortable = true)
     @Column(name = "TEST", length=1000)
     public String test;
 
+    @Indexable(suggest = true, facet = true, name = "Test Type", sortable = true)
     @Column(name = "TEST_TYPE", length=150)
     public String testType;
 
@@ -70,9 +72,11 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "BUFFER", length=1000)
     public String buffer;
 
+    @Indexable(suggest = true, facet = true, name = "Elution Type", sortable = true)
     @Column(name = "ELUTION_TYPE", length=200)
     public String elutionType;
 
+    @Indexable(suggest = true, facet = true, name = "System", sortable = true)
     @Column(name = "TEST_SYSTEM", length=150)
     public String system;
 

@@ -49,23 +49,23 @@ public class Impurities extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Indexable(facet = true, name = "Source Type", sortable = true)
-    @Column(name = "SOURCE_TYPE", length=500)
-    public String sourceType;
-
-    @Indexable(facet = true, name = "Source", sortable = true)
+    @Indexable(suggest = true, facet = true, name = "Source", sortable = true)
     @Column(name = "SOURCE", length=500)
     public String source;
 
-    @Indexable(sortable = true)
+    @Indexable(suggest = true, facet = true, name = "Source Type", sortable = true)
+    @Column(name = "SOURCE_TYPE", length=500)
+    public String sourceType;
+
+    @Indexable(suggest = true, facet = true, name = "Source ID", sortable = true)
     @Column(name = "SOURCE_ID", length=500)
     public String sourceId;
 
-    @Indexable(sortable = true)
+    @Indexable(suggest = true, facet = true, name = "Type", sortable = true)
     @Column(name = "TYPE", length=500)
     public String type;
 
-    @Indexable(sortable = true)
+    @Indexable(suggest = true, facet = true, name = "Spec Type", sortable = true)
     @Column(name = "SPEC_TYPE", length=500)
     public String specType;
 
@@ -77,6 +77,7 @@ public class Impurities extends ImpuritiesCommonData {
     @Column(name = "COMPANY_NAME", length=500)
     public String submitterName;
 
+    @Indexable(facet = true, name = "Product Substance ID", sortable = true)
     @Column(name = "PRODUCT_ID", length=200)
     public String productId;
 

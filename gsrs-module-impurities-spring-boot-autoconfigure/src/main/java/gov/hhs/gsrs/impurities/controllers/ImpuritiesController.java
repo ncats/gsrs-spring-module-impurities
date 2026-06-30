@@ -16,7 +16,9 @@ import gsrs.service.ExportService;
 import gsrs.service.GsrsEntityService;
 import ix.core.models.ETag;
 import gsrs.legacy.LegacyGsrsSearchService;
+import ix.core.search.SearchOptions;
 import ix.core.search.SearchResult;
+import ix.core.search.text.TextIndexer;
 import ix.ginas.exporters.ExportMetaData;
 import ix.ginas.exporters.ExportProcess;
 import ix.ginas.exporters.Exporter;
@@ -104,6 +106,30 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
     protected Stream<Impurities> filterStream(Stream<Impurities> stream, boolean publicOnly, Map<String, String> parameters) {
         return stream;
     }
+
+    @Override
+    public SearchOptions instrumentSearchOptions(SearchOptions so) {
+
+        so = super.instrumentSearchOptions(so);
+
+        so.addDateRangeFacet("root_creationDate");
+        so.addDateRangeFacet("root_lastModifiedDate");
+
+        if (gsrsFactoryConfiguration != null) {
+            Optional<Map<String, Object>> conf = gsrsFactoryConfiguration
+                    .getSearchSettingsFor(ImpuritiesEntityService.CONTEXT);
+
+            String restrict = conf
+                    .map(cc -> cc.get("restrictDefaultToIdentifiers"))
+                    .filter(bb -> bb != null).map(bb -> bb.toString())
+                    .orElse(null);
+            if (restrict != null && "true".equalsIgnoreCase(restrict)) {
+                so.setDefaultField(TextIndexer.FULL_IDENTIFIER_FIELD);
+            }
+        }
+        return so;
+    }
+
 
     /*
     @PreAuthorize("isAuthenticated()")
@@ -206,7 +232,6 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
                                     ObjectMapper mapper = new ObjectMapper();
                                     JsonNode actualObj = mapper.readTree(jsonString);
 
-                                    System.out.println(("*************** " + actualObj.path("uuid").textValue()));
                                  //   impSub._approvalID = actualObj.path("uuid").textValue();
                                   //  impSub._approvalID = actualObj.path("approvalID").textValue();
                                   //  impSub._name = actualObj.path("_name").textValue();

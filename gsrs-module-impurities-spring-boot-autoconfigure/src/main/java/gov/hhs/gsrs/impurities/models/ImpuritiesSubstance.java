@@ -48,7 +48,7 @@ public class ImpuritiesSubstance extends ImpuritiesCommonData {
     @Column(name = "SUBSTANCE_UUID", length=500)
     public String substanceUuid;
 
-    @Indexable
+    @Indexable(facet = true, name = "Ingredient Approval ID", sortable = true)
     @Column(name = "APPROVAL_ID", length=100)
     public String approvalID;
 
