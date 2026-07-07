@@ -2,7 +2,9 @@ package gov.hhs.gsrs.impurities.indexers;
 
 import gov.hhs.gsrs.impurities.models.Impurities;
 
+import gov.hhs.gsrs.impurities.models.ImpuritiesDetails;
 import gov.hhs.gsrs.impurities.models.ImpuritiesSubstance;
+import gov.hhs.gsrs.impurities.models.ImpuritiesTesting;
 import gsrs.DefaultDataSourceConfig;
 import ix.core.search.text.IndexValueMaker;
 import ix.core.search.text.IndexableValue;
@@ -33,36 +35,71 @@ public class ImpuritiesIndexValueMaker implements IndexValueMaker<Impurities> {
     @Override
     public void createIndexableValues(Impurities impurities, Consumer<IndexableValue> consumer) {
 
-        // Facet: Ingredient Name  (Note: This includes all the Ingredient Names)
-        for (ImpuritiesSubstance ImpSub : impurities.impuritiesSubstanceList) {
-            if (ImpSub != null) {
-                if (ImpSub.substanceUuid != null) {
-                    UUID subUuid = UUID.fromString(ImpSub.substanceUuid);
+        for (ImpuritiesSubstance impSub : impurities.impuritiesSubstanceList) {
+            if (impSub != null) {
+                if (impSub.substanceUuid != null) {
+                    UUID subUuid = UUID.fromString(impSub.substanceUuid);
 
-                    //Get Substance Object
-                    Query query = entityManager.createQuery("SELECT s FROM Substance s WHERE s.uuid=:subUuid");
-                    query.setParameter("subUuid", subUuid);
-                    Substance s = (Substance) query.getSingleResult();
+                    // Call getSubstance function to get Substance Object
+                    Substance s = getSubstance(subUuid);
 
                     if (s != null) {
                         s.names.forEach(nameObj -> {
+
                             if (nameObj.name != null) {
+                                // **** Facet: "Ingredient Name"  (Note: This includes all the Ingredient Names)
                                 consumer.accept(IndexableValue.simpleFacetStringValue("Ingredient Name", nameObj.name).suggestable().setSortable());
                             }
                         });
-                        // Facet: "Ingredient Name (Preferred)"
+
                         if (s.getName() != null) {
+                            // **** Facet: "Ingredient Name (Preferred)"
                             consumer.accept(IndexableValue.simpleFacetStringValue("Ingredient Name (Preferred)", s.getName()).suggestable().setSortable());
                         }
 
                         if (s.uuid != null) {
                             consumer.accept(IndexableValue.simpleStringValue("entity_link_substances", s.uuid.toString()));
 
+                            // **** Facet: "Substance UUID"
                             consumer.accept(IndexableValue.simpleFacetStringValue("Substance UUID", s.uuid.toString()));
                         }
                     }
                 }
-            }
+
+                for (ImpuritiesTesting impTest : impSub.impuritiesTestList) {
+                    if (impTest != null) {
+                        for (ImpuritiesDetails impDet : impTest.impuritiesDetailsList) {
+                            if (impDet != null) {
+                                if (impDet.relatedSubstanceUuid != null) {
+                                    UUID relatedSubUuid = UUID.fromString(impDet.relatedSubstanceUuid);
+
+                                    // Call getSubstance function to get Substance Object
+                                    Substance s = getSubstance(relatedSubUuid);
+
+                                    if (s != null) {
+                                        if (s.getName() != null) {
+                                            // **** Facet: "Impurities"
+                                            consumer.accept(IndexableValue.simpleFacetStringValue("Impurities", s.getName()).suggestable().setSortable());
+                                        }
+                                    } // if substance object is not null
+
+                                }  // if relatedSubstanceUuid != null
+                            }
+                        } // for impuritiesDetailsList
+                    }
+                } // for impuritiesTestList
+
+            } // if ImpSub != null
         } // for impuritiesSubstanceList
+    }
+
+    public Substance getSubstance(UUID subUuid) {
+
+        //Get Substance Object
+        Query query = entityManager.createQuery("SELECT s FROM Substance s WHERE s.uuid=:subUuid");
+        query.setParameter("subUuid", subUuid);
+        Substance s = (Substance) query.getSingleResult();
+
+        return s;
     }
 }

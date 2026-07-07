@@ -7,6 +7,7 @@ import gov.hhs.gsrs.impurities.LegacyImpuritiesSearcher;
 import gov.hhs.gsrs.impurities.ImpuritiesDataSourceConfig;
 
 import gov.nih.ncats.common.util.Unchecked;
+import gsrs.GsrsFactoryConfiguration;
 import gsrs.autoconfigure.GsrsExportConfiguration;
 import gsrs.controller.*;
 import gsrs.repository.ETagRepository;
@@ -87,6 +88,9 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
 
     @Autowired
     private LegacyImpuritiesSearcher legacyImpuritiesSearcher;
+
+    @Autowired
+    private GsrsFactoryConfiguration gsrsFactoryConfiguration;
 
     @Autowired
     private ObjectMapper objectMapper;
