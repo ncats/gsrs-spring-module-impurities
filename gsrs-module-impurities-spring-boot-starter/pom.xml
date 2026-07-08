@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>gsrs-module-impurities-spring-boot-starter</artifactId>
+    <name>gsrs-module-impurities-spring-boot-starter</name>
 
     <dependencies>
         <!-- IMPURITIES MODULE Autoconfigure Dependencies -->
