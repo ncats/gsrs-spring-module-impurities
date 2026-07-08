@@ -73,6 +73,7 @@
 
     <!-- FOR MAVEN DEPLOYMENT WITHOUT SNAPSHOT VERSION BEGIN -->
     <!-- *** IMPORTANT: UNCOMMENT THIS SECTION WHEN DOING DEPLOYMENT TO MAVEN CENTRAL -->
+    <!--
     <build>
         <plugins>
             <plugin>
@@ -153,8 +154,8 @@
                             <goal>sign</goal>
                         </goals>
                         <configuration>
-                            <keyname>1B75E0CCD33A6457</keyname>
-                            <passphraseServerId>projectgsrs1</passphraseServerId>
+                            <keyname>${gpgKeyid}</keyname>
+                            <passphraseServerId>${gpgPassphrase}</passphraseServerId>
                             <gpgArguments>
                                 <arg>&#45;&#45;batch</arg>
                                 <arg>&#45;&#45;pinentry-mode</arg>
@@ -167,6 +168,7 @@
             </plugin>
         </plugins>
     </build>
+    -->
     <!-- FOR MAVEN DEPLOYMENT WITHOUT SNAPSHOT VERSION END -->
 
 </project>
