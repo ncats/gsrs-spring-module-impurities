@@ -153,8 +153,8 @@
                                     <goal>sign</goal>
                                 </goals>
                                 <configuration>
-                                    <keyname>1B75E0CCD33A6457</keyname>
-                                    <passphraseServerId>projectgsrs1</passphraseServerId>
+                                    <keyname>${gpg.keyId}</keyname>
+                                    <passphraseServerId>${gpg.passphrase}</passphraseServerId>
                                     <gpgArguments>
                                         <arg>--batch</arg>
                                         <arg>--pinentry-mode</arg>
