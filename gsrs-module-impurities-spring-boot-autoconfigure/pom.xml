@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>gsrs-module-impurities-spring-boot-autoconfigure</artifactId>
+    <name>gsrs-module-impurities-spring-boot-autoconfigure</name>
 
     <dependencies>
         <!-- NCATS Common and STARTER Dependencies -->
