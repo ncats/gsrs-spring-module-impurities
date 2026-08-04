@@ -47,9 +47,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
-import javax.servlet.http.HttpServletRequest;
-import javax.persistence.PersistenceContext;
-import javax.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
 
 @ExposesResourceFor(Impurities.class)
 @GsrsRestApiController(context = ImpuritiesEntityService.CONTEXT, idHelper = IdHelpers.NUMBER)
