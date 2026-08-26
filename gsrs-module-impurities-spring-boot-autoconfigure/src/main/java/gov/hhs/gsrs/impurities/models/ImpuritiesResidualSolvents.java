@@ -60,6 +60,9 @@ public class ImpuritiesResidualSolvents extends ImpuritiesCommonData {
     @Column(name = "PHARMACEUTICAL_LIMIT", length=500)
     public String pharmaceuticalLimit;
 
+    @Column(name = "ANALYSIS", length=2000)
+    public String analysis;
+
     @Column(name = "TEST_TYPE", length=500)
     public String testType;
 

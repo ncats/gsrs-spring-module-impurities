@@ -43,11 +43,11 @@ public class ImpuritiesInorganicTest extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "SOURCE_TYPE", length=500)
-    public String sourceType;
-
     @Column(name = "SOURCE", length=500)
     public String source;
+
+    @Column(name = "SOURCE_TYPE", length=500)
+    public String sourceType;
 
     @Column(name = "SOURCE_ID", length=500)
     public String sourceId;

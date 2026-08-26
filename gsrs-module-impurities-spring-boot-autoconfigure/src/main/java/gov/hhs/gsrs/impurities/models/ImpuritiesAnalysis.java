@@ -84,6 +84,12 @@ public class ImpuritiesAnalysis extends ImpuritiesCommonData {
     @Column(name = "FORMULA_F", length=500)
     public String formulaF;
 
+    @Column(name = "FORMULA_MR1", length=500)
+    public String formulaMR1;
+
+    @Column(name = "FORMULA_MR2", length=500)
+    public String formulaMR2;
+
     @Indexable(indexed=false)
     @ParentReference
     @EqualsAndHashCode.Exclude

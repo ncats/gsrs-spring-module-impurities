@@ -151,6 +151,18 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "SYSTEM_SUIT_REQ_SIG_NOI_RATIO", length=2000)
     public String systemSuitabilitySignalToNoiseRatio;
 
+    // System Suitability Stock Solution
+    @Column(name = "SYSTEM_SUIT_STOCK_SOLUTION", length=2000)
+    public String systemSuitabilityStockSolution;
+
+    // Standard Stock Solution
+    @Column(name = "STANDARD_STOCK_SOLUTION", length=2000)
+    public String standardStockSolution;
+
+    // Sample Stock Solution
+    @Column(name = "SAMPLE_STOCK_SOLUTION", length=2000)
+    public String sampleStockSolution;
+
     // Set PARENT Class, ImpuritiesSubstance
     @Indexable(indexed=false)
     @ParentReference
@@ -163,23 +175,6 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     // Set PARENT Class, ImpuritiesSubstance
     public void setOwner(ImpuritiesSubstance impuritiesSubstance) {
         this.owner = impuritiesSubstance;
-    }
-
-    // Set CHILDREN Class, ImpuritiesElutionSolvent
-    @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
-    public List<ImpuritiesElutionSolvent> impuritiesElutionSolventList = new ArrayList<ImpuritiesElutionSolvent>();
-
-    // Set CHILDREN Class, ImpuritiesElutionSolvent
-    public void setImpuritiesElutionSolventList(List<ImpuritiesElutionSolvent> impuritiesElutionSolventList) {
-        this.impuritiesElutionSolventList = impuritiesElutionSolventList;
-        if (impuritiesElutionSolventList != null) {
-            for (ImpuritiesElutionSolvent imp : impuritiesElutionSolventList)
-            {
-                imp.setOwner(this);
-            }
-        }
     }
 
     // Set CHILDREN Class, ImpuritiesSolution

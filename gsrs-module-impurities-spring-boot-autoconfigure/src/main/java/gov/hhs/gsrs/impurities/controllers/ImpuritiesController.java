@@ -194,6 +194,13 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
+    @GetGsrsRestApiMapping("/getImpuritiesLists")
+    public ResponseEntity<String> getImpuritiesLists() throws Exception {
+        List<Object[]> list = impuritiesEntityService.getImpuritiesLists();
+
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
     public JsonNode injectSubstanceBySubstanceUuid(String substanceUuid) {
 
         JsonNode actualObj = null;
