@@ -6,7 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
+// SB 3x Acharna should examine changes closely
 
 @Service
 public class SubstanceModuleService {
@@ -49,13 +52,13 @@ public class SubstanceModuleService {
         }
         if(response == null) return null;
 
-        HttpStatus statusCode = response.getStatusCode();
+        HttpStatusCode statusCode = response.getStatusCode();
         if (statusCode == null)  return null;
 
-        if (statusCode.equals(HttpStatus.valueOf(404))) {
+        if (statusCode.equals(HttpStatusCode.valueOf(404))) {
             return false;
         }
-        if (statusCode.equals(HttpStatus.OK)) {
+        if (statusCode.equals(HttpStatusCode.valueOf(200))) {
             JsonNode root = null;
             try {
                 root = objectMapper.readTree(response.getBody());
@@ -146,8 +149,8 @@ public class SubstanceModuleService {
 
         if (response == null) return null;
 
-        HttpStatus statusCode = response.getStatusCode();
-        if (statusCode.equals(HttpStatus.valueOf(404))) {
+        HttpStatusCode statusCode = response.getStatusCode();
+        if (statusCode.equals(HttpStatusCode.valueOf(404))) {
             return null;
         }
 
@@ -205,7 +208,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -217,8 +220,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 
 
