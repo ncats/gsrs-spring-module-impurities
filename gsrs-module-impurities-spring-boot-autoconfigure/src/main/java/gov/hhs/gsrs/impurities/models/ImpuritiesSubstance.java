@@ -16,8 +16,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -80,8 +78,7 @@ public class ImpuritiesSubstance extends ImpuritiesCommonData {
 
     // Set Children Class, ImpuritiesTesting
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesTesting> impuritiesTestList = new ArrayList<ImpuritiesTesting>();
 
     // Set Children Class, ImpuritiesTesting
@@ -97,8 +94,7 @@ public class ImpuritiesSubstance extends ImpuritiesCommonData {
 
     // Set Children Class, ImpuritiesResidualSolventsTest
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesResidualSolventsTest> impuritiesResidualSolventsTestList = new ArrayList<ImpuritiesResidualSolventsTest>();
 
     // Set Children Class, ImpuritiesResidualSolventsTest
@@ -114,8 +110,7 @@ public class ImpuritiesSubstance extends ImpuritiesCommonData {
 
     // Set Children Class, ImpuritiesInorganicTest
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesInorganicTest> impuritiesInorganicTestList = new ArrayList<ImpuritiesInorganicTest>();
 
     // Set Children Class, ImpuritiesInorganicTest

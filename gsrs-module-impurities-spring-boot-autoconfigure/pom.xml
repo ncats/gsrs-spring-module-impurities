@@ -71,13 +71,6 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- SPRINGFOX BOOT Dependencies -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-
         <!-- LOMBOK Dependencies -->
         <dependency>
             <groupId>org.projectlombok</groupId>
