@@ -9,6 +9,8 @@ import gsrs.DefaultDataSourceConfig;
 import ix.core.search.text.IndexValueMaker;
 import ix.core.search.text.IndexableValue;
 import ix.ginas.models.v1.Substance;
+import ix.core.models.Structure;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -21,6 +23,9 @@ import java.util.UUID;
 
 @Component
 public class ImpuritiesIndexValueMaker implements IndexValueMaker<Impurities> {
+
+    @Value("${substanceAPI.BaseUrl}")
+    private String baseUrl;
 
     @PersistenceContext(unitName = DefaultDataSourceConfig.NAME_ENTITY_MANAGER)
     public EntityManager entityManager;
@@ -44,27 +49,44 @@ public class ImpuritiesIndexValueMaker implements IndexValueMaker<Impurities> {
                     Substance s = getSubstance(subUuid);
 
                     if (s != null) {
+
+                        if (s.uuid != null) {
+                            consumer.accept(IndexableValue.simpleStringValue("entity_link_substances", s.uuid.toString()));
+                        }
+
+                        if (s.approvalID != null) {
+                            // **** Facet: "Substance APPROVAL ID"
+                            consumer.accept(IndexableValue.simpleFacetStringValue("Substance Approval ID", s.approvalID));
+                        }
+
+                        if (s.getName() != null) {
+                            // **** Facet: "Ingredient Name (Preferred)"
+                            consumer.accept(IndexableValue.simpleFacetStringValue("Substance Name (Preferred)", s.getName()).suggestable().setSortable());
+                        }
+
                         s.names.forEach(nameObj -> {
 
                             if (nameObj.name != null) {
                                 // **** Facet: "Ingredient Name"  (Note: This includes all the Ingredient Names)
-                                consumer.accept(IndexableValue.simpleFacetStringValue("Ingredient Name", nameObj.name).suggestable().setSortable());
+                                consumer.accept(IndexableValue.simpleFacetStringValue("Substance Name", nameObj.name).suggestable().setSortable());
                             }
                         });
 
-                        if (s.getName() != null) {
-                            // **** Facet: "Ingredient Name (Preferred)"
-                            consumer.accept(IndexableValue.simpleFacetStringValue("Ingredient Name (Preferred)", s.getName()).suggestable().setSortable());
-                        }
+                    } // if substance object is present or not null
 
-                        if (s.uuid != null) {
-                            consumer.accept(IndexableValue.simpleStringValue("entity_link_substances", s.uuid.toString()));
+                    // Call getStructure function to get Substance Object
+                   // Structure struct = getStructure(subUuid);
 
-                            // **** Facet: "Substance UUID"
-                            consumer.accept(IndexableValue.simpleFacetStringValue("Substance UUID", s.uuid.toString()));
-                        }
+                    /*
+                    if (struct != null) {
+                        System.out.println("********************************" + struct.id);
+                        // **** Facet: "Structure Smiles"
+                        //  consumer.accept(IndexableValue.simpleFacetStringValue("Smiles", s.structure.smiles));
                     }
-                }
+                    */
+
+                } // if Substance UUID is not null
+
 
                 for (ImpuritiesTesting impTest : impSub.impuritiesTestList) {
                     if (impTest != null) {
@@ -102,4 +124,57 @@ public class ImpuritiesIndexValueMaker implements IndexValueMaker<Impurities> {
 
         return s;
     }
+
+    /*
+    public Structure getStructure(UUID subUuid) {
+
+        //Get Substance Object
+        Query query = entityManager.createQuery("SELECT s FROM Structure s WHERE s.id=:subUuid");
+        query.setParameter("subUuid", subUuid);
+        Structure s = (Structure) query.getSingleResult();
+
+        return s;
+    }
+
+    public Boolean substanceExists(String uuid) {
+        System.out.println("Inside "+ "substanceExists " + uuid);
+
+        // is there a way to make this final and use property?
+        String urlTemplate1 = baseUrl +  "api/v1/substances(%s)";
+        Boolean exists;
+        if (uuid == null) return null;
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.getForEntity(String.format(urlTemplate1, uuid), String.class);
+        } catch(HttpClientErrorException e) {
+            // this is wierd. 404 will generate exception.
+            e.printStackTrace();
+            return null;
+        }
+        if(response == null) return null;
+
+        HttpStatus statusCode = response.getStatusCode();
+        if (statusCode == null)  return null;
+
+        if (statusCode.equals(HttpStatus.valueOf(404))) {
+            return false;
+        }
+        if (statusCode.equals(HttpStatus.OK)) {
+            JsonNode root = null;
+            try {
+                root = objectMapper.readTree(response.getBody());
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return null;
+            }
+            // Should not be necessary, but possible to get 200 and valid json
+            // on a redirect.
+            JsonNode name = root.path("uuid");
+            if (name != null &&  name.asText().equals(uuid)) {
+                return true;
+            }
+        }
+        return null;
+    }
+    */
 }

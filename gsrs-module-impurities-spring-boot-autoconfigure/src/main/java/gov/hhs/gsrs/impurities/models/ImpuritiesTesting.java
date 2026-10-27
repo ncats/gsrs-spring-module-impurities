@@ -107,6 +107,15 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "AUTOSAMPLER_TEMPERATURE", length=100)
     public String autosamplerTemperature;
 
+    @Column(name = "COLUMN_STATIONARY_PHASE", length=100)
+    public String columnStationaryPhase;
+
+    @Column(name = "RUN_TIME", length=500)
+    public String runTime;
+
+    @Column(name = "INJECTION", length=500)
+    public String injection;
+
     @Column(name = "FLOW_RATE", length=200)
     public String flowRate;
 
@@ -150,6 +159,9 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     // System Suitability Requirements Trailing Factor
     @Column(name = "SYSTEM_SUIT_REQ_SIG_NOI_RATIO", length=2000)
     public String systemSuitabilitySignalToNoiseRatio;
+
+    @Column(name = "SYSTEM_SUIT_REQ_PEAK_VALLEY_RATIO", length=2000)
+    public String systemSuitabilityReqPeakValleyRatio;
 
     // System Suitability Stock Solution
     @Column(name = "SYSTEM_SUIT_STOCK_SOLUTION", length=2000)

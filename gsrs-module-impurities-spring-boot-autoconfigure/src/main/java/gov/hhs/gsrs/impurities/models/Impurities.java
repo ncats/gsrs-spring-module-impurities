@@ -97,6 +97,7 @@ public class Impurities extends ImpuritiesCommonData {
         return "Not Deprecated";
     }
 
+    // One to Many IMPURITIES SUBSTANCE LISTS
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
@@ -112,10 +113,23 @@ public class Impurities extends ImpuritiesCommonData {
         }
     }
 
+    // One to One Relationship to IMPURITIES TOTAL
     @Basic(fetch = FetchType.LAZY)
     @JoinColumn(name = "IMPURITIES_TOTAL_ID", referencedColumnName = "ID")
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public ImpuritiesTotal impuritiesTotal;
+
+    // One to One Relationship to IMPURITIES ADDITIONAL REQUIREMENTS
+    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ImpuritiesAdditionalRequirements impuritiesAdditionalRequirements;
+
+    // In Impurities class
+    public void setImpuritiesAdditionalRequirements(ImpuritiesAdditionalRequirements req) {
+        this.impuritiesAdditionalRequirements = req;
+        if (req != null) {
+            req.setOwner(this);
+        }
+    }
 
     public String getDateTypeDate() {
         //Convert Date to String, get from database

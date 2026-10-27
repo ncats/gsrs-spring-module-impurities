@@ -44,14 +44,21 @@ public class ImpuritiesSolutionTable extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "SOLUTION_TIME")
-    public Double solutionTime;
+    @Column(name = "SOLUTION_TIME", length=200)
+    public String solutionTime;
 
-    @Column(name = "SOLUTION_A_PERCENT")
-    public Double solutionAPercent;
+    @Column(name = "SOLUTION_A_PERCENT", length=100)
+    public String solutionAPercent;
 
-    @Column(name = "SOLUTION_B_PERCENT")
-    public Double solutionBPercent;
+    @Column(name = "SOLUTION_B_PERCENT", length=100)
+    public String solutionBPercent;
+
+    @Column(name = "SOLUTION_A_HEADER", length=100)
+    public String solutionAHeader;
+
+    @Column(name = "SOLUTION_B_HEADER", length=100)
+    public String solutionBHeader;
+
 
     @Column(name = "SOLUTION_C_PERCENT")
     public Double solutionCPercent;
