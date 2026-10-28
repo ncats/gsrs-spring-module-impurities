@@ -1,33 +1,13 @@
 package gov.hhs.gsrs.impurities.models;
 
-import gsrs.GsrsEntityProcessorListener;
-import gsrs.model.AbstractGsrsEntity;
-import gsrs.model.AbstractGsrsManualDirtyEntity;
 import ix.core.models.Indexable;
-import ix.core.models.IxModel;
 import ix.core.SingleParent;
 import ix.core.models.ParentReference;
-import ix.core.search.text.TextIndexerEntityListener;
-import ix.ginas.models.serialization.GsrsDateDeserializer;
-import ix.ginas.models.serialization.GsrsDateSerializer;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
-
-import java.util.Date;
+import jakarta.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -189,11 +169,26 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
         this.owner = impuritiesSubstance;
     }
 
+    // Set CHILDREN Class, ImpuritiesElutionSolvent
+    @ToString.Exclude
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<ImpuritiesElutionSolvent> impuritiesElutionSolventList = new ArrayList<ImpuritiesElutionSolvent>();
+
+    // Set CHILDREN Class, ImpuritiesElutionSolvent
+    public void setImpuritiesElutionSolventList(List<ImpuritiesElutionSolvent> impuritiesElutionSolventList) {
+        this.impuritiesElutionSolventList = impuritiesElutionSolventList;
+        if (impuritiesElutionSolventList != null) {
+            for (ImpuritiesElutionSolvent imp : impuritiesElutionSolventList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
     // Set CHILDREN Class, ImpuritiesSolution
     @ToString.Exclude
     @OrderBy("solution_letter asc")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesSolution> impuritiesSolutionList = new ArrayList<ImpuritiesSolution>();
 
     // Set CHILDREN Class, ImpuritiesSolution
@@ -209,8 +204,7 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
 
     // Set CHILDREN Class, ImpuritiesSolutionTable
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesSolutionTable> impuritiesSolutionTableList = new ArrayList<ImpuritiesSolutionTable>();
 
     // Set CHILDREN Class, ImpuritiesSolutionTable
@@ -243,8 +237,7 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
 
     // Set CHILDREN Class, ImpuritiesDetails
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesDetails> impuritiesDetailsList = new ArrayList<ImpuritiesDetails>();
 
     // Set CHILDREN Class, ImpuritiesDetails
@@ -260,8 +253,7 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
 
     // Set CHILDREN Class, ImpuritiesUnspecified
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesUnspecified> impuritiesUnspecifiedList = new ArrayList<ImpuritiesUnspecified>();
 
     // Set CHILDREN Class, ImpuritiesUnspecified

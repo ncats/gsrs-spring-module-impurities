@@ -4,12 +4,12 @@ import gov.hhs.gsrs.impurities.services.SubstanceModuleService;
 
 import gsrs.EnableGsrsApi;
 import gsrs.EnableGsrsJpaEntities;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 @EnableGsrsJpaEntities
 @EnableGsrsApi
-@Configuration
+@AutoConfiguration
 @Import({
          SubstanceModuleService.class
 })
