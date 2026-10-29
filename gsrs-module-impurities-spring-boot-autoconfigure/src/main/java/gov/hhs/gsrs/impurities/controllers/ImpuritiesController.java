@@ -40,8 +40,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.JsonNode;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+
+// jackson databind
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -92,9 +96,11 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
     @Autowired
     private GsrsFactoryConfiguration gsrsFactoryConfiguration;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    //@Autowired
+    //private ObjectMapper objectMapper;
 
+   // @Autowired
+   // private JsonMapper mapper;
 
     @Override
     public GsrsEntityService<Impurities, Long> getEntityService() {
@@ -201,6 +207,7 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
+    /*
     public JsonNode injectSubstanceBySubstanceUuid(String substanceUuid) {
 
         JsonNode actualObj = null;
@@ -211,7 +218,8 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
 
                 String jsonString = response.getBody();
                 if (jsonString != null) {
-                    ObjectMapper mapper = new ObjectMapper();
+                    //ObjectMapper mapper = new ObjectMapper();
+                    JsonMapper mapper = new JsonMapper();
                     actualObj = mapper.readTree(jsonString);
                 }
             }
@@ -257,5 +265,5 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
         }
         return impurities;
     }
-
+    */
 }

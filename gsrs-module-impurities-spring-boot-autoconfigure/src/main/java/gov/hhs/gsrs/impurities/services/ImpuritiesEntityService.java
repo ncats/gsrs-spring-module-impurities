@@ -4,31 +4,29 @@ import gov.hhs.gsrs.impurities.models.*;
 import gov.hhs.gsrs.impurities.repositories.ImpuritiesRepository;
 
 import gsrs.controller.IdHelpers;
-import gsrs.module.substance.SubstanceEntityService;
 import gsrs.repository.GroupRepository;
 import gsrs.service.AbstractGsrsEntityService;
+import gsrs.module.substance.SubstanceEntityService;
 import gsrs.events.AbstractEntityCreatedEvent;
 import gsrs.events.AbstractEntityUpdatedEvent;
-import gsrs.validator.ValidatorConfig;
-
-import ix.core.validator.GinasProcessingMessage;
-import ix.core.validator.ValidationResponse;
-import ix.core.validator.ValidationResponseBuilder;
-import ix.core.validator.ValidatorCallback;
-import ix.utils.Util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import jakarta.persistence.EntityManager;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.web.bind.annotation.PathVariable;
+// jackson databind
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
+
+//import com.fasterxml.jackson.databind.ObjectMapper;
+
+// jakarta
+import jakarta.persistence.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,8 +46,13 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
     @Autowired
     private ImpuritiesRepository repository;
 
-    @Autowired
+    /*@Autowired
     private ObjectMapper objectMapper;
+    */
+
+    @Autowired
+    @Qualifier("legacyJsonMapper")
+    private JsonMapper mapper;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -66,7 +69,7 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
 
     @Override
     protected Impurities fromNewJson(JsonNode json) throws IOException {
-        return objectMapper.convertValue(json, Impurities.class);
+        return mapper.convertValue(json, Impurities.class);
     }
 
     @Override
@@ -118,7 +121,7 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
     @Override
     protected Impurities fromUpdatedJson(JsonNode json) throws IOException {
         //TODO should we make any edits to remove fields?
-        return objectMapper.convertValue(json, Impurities.class);
+        return mapper.convertValue(json, Impurities.class);
     }
 
     @Override
@@ -128,7 +131,7 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
 
     @Override
     protected JsonNode toJson(Impurities impurities) throws IOException {
-        return objectMapper.valueToTree(impurities);
+        return mapper.valueToTree(impurities);
     }
 
     @Override

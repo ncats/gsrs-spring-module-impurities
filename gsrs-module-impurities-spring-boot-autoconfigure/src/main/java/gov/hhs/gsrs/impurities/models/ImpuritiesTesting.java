@@ -169,6 +169,7 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
         this.owner = impuritiesSubstance;
     }
 
+    /*
     // Set CHILDREN Class, ImpuritiesElutionSolvent
     @ToString.Exclude
     @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
@@ -184,6 +185,7 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
             }
         }
     }
+    */
 
     // Set CHILDREN Class, ImpuritiesSolution
     @ToString.Exclude
@@ -220,7 +222,7 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
 
     // Set CHILDREN Class, ImpuritiesAnalysis
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
+    //@LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesAnalysis> impuritiesAnalysisList = new ArrayList<ImpuritiesAnalysis>();
 

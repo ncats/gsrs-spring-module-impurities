@@ -126,7 +126,7 @@ public class ImpuritiesSubstance extends ImpuritiesCommonData {
 
     // Set Children Class, ImpuritiesSpecificTest
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
+    //@LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesSpecificTest> impuritiesSpecificTestList = new ArrayList<ImpuritiesSpecificTest>();
 

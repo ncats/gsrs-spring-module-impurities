@@ -47,4 +47,12 @@ public class ImpuritiesAdditionalRequirements extends ImpuritiesCommonData {
     @JoinColumn(name = "IMPURITIES_ID")
     @JsonIgnore
     private Impurities owner;
+
+    public void setOwner(Impurities owner) {
+        this.owner = owner;
+    }
+
+    public Impurities getOwner() {
+        return this.owner;
+    }
 }
