@@ -7,6 +7,7 @@ import gov.hhs.gsrs.impurities.LegacyImpuritiesSearcher;
 import gov.hhs.gsrs.impurities.ImpuritiesDataSourceConfig;
 
 import gov.nih.ncats.common.util.Unchecked;
+import gsrs.GsrsFactoryConfiguration;
 import gsrs.autoconfigure.GsrsExportConfiguration;
 import gsrs.controller.*;
 import gsrs.repository.ETagRepository;
@@ -16,7 +17,9 @@ import gsrs.service.ExportService;
 import gsrs.service.GsrsEntityService;
 import ix.core.models.ETag;
 import gsrs.legacy.LegacyGsrsSearchService;
+import ix.core.search.SearchOptions;
 import ix.core.search.SearchResult;
+import ix.core.search.text.TextIndexer;
 import ix.ginas.exporters.ExportMetaData;
 import ix.ginas.exporters.ExportProcess;
 import ix.ginas.exporters.Exporter;
@@ -37,8 +40,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.JsonNode;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+
+// jackson databind
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -87,8 +94,13 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
     private LegacyImpuritiesSearcher legacyImpuritiesSearcher;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private GsrsFactoryConfiguration gsrsFactoryConfiguration;
 
+    //@Autowired
+    //private ObjectMapper objectMapper;
+
+   // @Autowired
+   // private JsonMapper mapper;
 
     @Override
     public GsrsEntityService<Impurities, Long> getEntityService() {
@@ -104,6 +116,30 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
     protected Stream<Impurities> filterStream(Stream<Impurities> stream, boolean publicOnly, Map<String, String> parameters) {
         return stream;
     }
+
+    @Override
+    public SearchOptions instrumentSearchOptions(SearchOptions so) {
+
+        so = super.instrumentSearchOptions(so);
+
+        so.addDateRangeFacet("root_creationDate");
+        so.addDateRangeFacet("root_lastModifiedDate");
+
+        if (gsrsFactoryConfiguration != null) {
+            Optional<Map<String, Object>> conf = gsrsFactoryConfiguration
+                    .getSearchSettingsFor(ImpuritiesEntityService.CONTEXT);
+
+            String restrict = conf
+                    .map(cc -> cc.get("restrictDefaultToIdentifiers"))
+                    .filter(bb -> bb != null).map(bb -> bb.toString())
+                    .orElse(null);
+            if (restrict != null && "true".equalsIgnoreCase(restrict)) {
+                so.setDefaultField(TextIndexer.FULL_IDENTIFIER_FIELD);
+            }
+        }
+        return so;
+    }
+
 
     /*
     @PreAuthorize("isAuthenticated()")
@@ -164,6 +200,14 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
+    @GetGsrsRestApiMapping("/getImpuritiesLists")
+    public ResponseEntity<String> getImpuritiesLists() throws Exception {
+        List<Object[]> list = impuritiesEntityService.getImpuritiesLists();
+
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
+    /*
     public JsonNode injectSubstanceBySubstanceUuid(String substanceUuid) {
 
         JsonNode actualObj = null;
@@ -174,7 +218,8 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
 
                 String jsonString = response.getBody();
                 if (jsonString != null) {
-                    ObjectMapper mapper = new ObjectMapper();
+                    //ObjectMapper mapper = new ObjectMapper();
+                    JsonMapper mapper = new JsonMapper();
                     actualObj = mapper.readTree(jsonString);
                 }
             }
@@ -206,7 +251,6 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
                                     ObjectMapper mapper = new ObjectMapper();
                                     JsonNode actualObj = mapper.readTree(jsonString);
 
-                                    System.out.println(("*************** " + actualObj.path("uuid").textValue()));
                                  //   impSub._approvalID = actualObj.path("uuid").textValue();
                                   //  impSub._approvalID = actualObj.path("approvalID").textValue();
                                   //  impSub._name = actualObj.path("_name").textValue();
@@ -221,5 +265,5 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
         }
         return impurities;
     }
-
+    */
 }

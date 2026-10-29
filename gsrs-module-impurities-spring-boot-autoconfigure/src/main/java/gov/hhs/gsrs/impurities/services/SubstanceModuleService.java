@@ -1,13 +1,17 @@
 package gov.hhs.gsrs.impurities.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.JsonNode;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+
+// jackson databind
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatusCode;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,13 +21,14 @@ import org.springframework.web.client.RestTemplate;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-// SB 3x Acharna should examine changes closely
+// SB 3x should examine changes closely
 
 @Service
 public class SubstanceModuleService {
 
     @Autowired
-    private ObjectMapper objectMapper;
+    @Qualifier("legacyJsonMapper")
+    private JsonMapper mapper;
 
     @Autowired
     private Environment env;
@@ -36,7 +41,6 @@ public class SubstanceModuleService {
     // https://www.baeldung.com/spring-tests-override-properties
 
     public Boolean substanceExists(String uuid) {
-        System.out.println("Inside "+ "substanceExists " + uuid);
 
         // is there a way to make this final and use property?
         String urlTemplate1 = baseUrl +  "api/v1/substances(%s)";
@@ -61,8 +65,8 @@ public class SubstanceModuleService {
         if (statusCode.equals(HttpStatusCode.valueOf(200))) {
             JsonNode root = null;
             try {
-                root = objectMapper.readTree(response.getBody());
-            } catch (JsonProcessingException e) {
+                root = mapper.readTree(response.getBody());
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
@@ -210,9 +214,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind .ObjectMapper;
 
-// import springfox.documentation.spring.web.json.Json;
 import ix.utils.Util;
 import java.io.IOException;
 import java.util.ArrayList;

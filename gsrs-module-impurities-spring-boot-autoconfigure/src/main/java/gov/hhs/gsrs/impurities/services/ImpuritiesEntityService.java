@@ -4,33 +4,35 @@ import gov.hhs.gsrs.impurities.models.*;
 import gov.hhs.gsrs.impurities.repositories.ImpuritiesRepository;
 
 import gsrs.controller.IdHelpers;
-import gsrs.module.substance.SubstanceEntityService;
 import gsrs.repository.GroupRepository;
 import gsrs.service.AbstractGsrsEntityService;
+import gsrs.module.substance.SubstanceEntityService;
 import gsrs.events.AbstractEntityCreatedEvent;
 import gsrs.events.AbstractEntityUpdatedEvent;
 
-import gsrs.validator.ValidatorConfig;
-import ix.core.validator.GinasProcessingMessage;
-import ix.core.validator.ValidationResponse;
-import ix.core.validator.ValidationResponseBuilder;
-import ix.core.validator.ValidatorCallback;
-// import ix.ginas.models.v1.Substance;
-// import ix.ginas.utils.GinasProcessingStrategy;
-// import ix.ginas.utils.JsonSubstanceFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import jakarta.persistence.EntityManager;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ix.utils.Util;
+// jackson databind
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
+
+//import com.fasterxml.jackson.databind.ObjectMapper;
+
+// jakarta
+import jakarta.persistence.*;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 
 @Service
@@ -44,8 +46,13 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
     @Autowired
     private ImpuritiesRepository repository;
 
-    @Autowired
+    /*@Autowired
     private ObjectMapper objectMapper;
+    */
+
+    @Autowired
+    @Qualifier("legacyJsonMapper")
+    private JsonMapper mapper;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -62,7 +69,7 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
 
     @Override
     protected Impurities fromNewJson(JsonNode json) throws IOException {
-        return objectMapper.convertValue(json, Impurities.class);
+        return mapper.convertValue(json, Impurities.class);
     }
 
     @Override
@@ -111,35 +118,20 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
         return null;
     }
 
-    /*
-    @Override
-    protected Application fixUpdatedIfNeeded(Application oldEntity, Application updatedEntity) {
-        //force the "owner" on all the updated fields to point to the old version so the uuids are correct
-        return updatedEntity;
-    }
-    */
-
     @Override
     protected Impurities fromUpdatedJson(JsonNode json) throws IOException {
         //TODO should we make any edits to remove fields?
-        return objectMapper.convertValue(json, Impurities.class);
+        return mapper.convertValue(json, Impurities.class);
     }
 
     @Override
     protected List<Impurities> fromUpdatedJsonList(JsonNode list) throws IOException {
         return null;
-        /*
-        List<Application> substances = new ArrayList<>(list.size());
-        for(JsonNode n : list){
-            substances.add(fromUpdatedJson(n));
-        }
-        return substances;
-         */
     }
 
     @Override
     protected JsonNode toJson(Impurities impurities) throws IOException {
-        return objectMapper.valueToTree(impurities);
+        return mapper.valueToTree(impurities);
     }
 
     @Override
@@ -170,10 +162,46 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
         return Optional.empty();
     }
 
-
     public List<SubstanceRelationship> findSubstanceRelationshipBySubstanceUuid(String substanceUuid) {
         List<SubstanceRelationship> list = repository.findSubstanceRelationshipBySubstanceUuid(substanceUuid);
         return list;
     }
 
+    public List<Object[]> getImpuritiesLists() {
+        List<Object[]> rawResults = repository.getImpuritiesWithSubstance();
+
+        // Key: productSubstanceName + "|" + substanceUuid
+        // Value: [Name, UUID, "USP|||10", "EP|||11", ...]
+        Map<String, List<Object>> groupedMap = new LinkedHashMap<>();
+
+        for (Object[] row : rawResults) {
+            String name = (String) row[0];
+            String uuid = (String) row[1];
+            String source = (String) row[2];
+            Long id = (Long) row[3]; // Adjust type if needed
+
+            // Use ||| to separate the source and ID
+            String combinedSourceAndId = source + "|||" + id;
+
+            String key = name + "|" + uuid;
+
+            if (!groupedMap.containsKey(key)) {
+                List<Object> rowData = new ArrayList<>();
+                rowData.add(name);
+                rowData.add(uuid);
+                groupedMap.put(key, rowData);
+            }
+
+            // Add "USP|||10" as a new column
+            groupedMap.get(key).add(combinedSourceAndId);
+        }
+
+        // Convert back to List<Object[]>
+        List<Object[]> finalResult = new ArrayList<>();
+        for (List<Object> rowData : groupedMap.values()) {
+            finalResult.add(rowData.toArray());
+        }
+
+        return finalResult;
+    }
 }

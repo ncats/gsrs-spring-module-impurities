@@ -1,6 +1,5 @@
 package gov.hhs.gsrs.impurities.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import gsrs.GsrsEntityProcessorListener;
 import gsrs.model.AbstractGsrsEntity;
 import gsrs.model.AbstractGsrsManualDirtyEntity;
@@ -16,8 +15,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -35,33 +32,27 @@ import java.util.ArrayList;
 @SingleParent
 @Data
 @Entity
-@Table(name="SRSCID_IMPURITIES_ELUTION")
-public class ImpuritiesElutionSolvent extends ImpuritiesCommonData {
-
+@Table(name="SRSCID_IMPURITIES_ADDL_REQUIREMENTS")
+public class ImpuritiesAdditionalRequirements extends ImpuritiesCommonData {
     @Id
-    @SequenceGenerator(name = "impElutionSeq", sequenceName = "SRSCID_SQ_IMPURITIES_ELUT_ID", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "impElutionSeq")
+    @SequenceGenerator(name = "impAddReqSeq", sequenceName = "SRSCID_SQ_IMPURITIES_ADDL_REQ_ID", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "impAddReqSeq")
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "ELUTION_SOLVENT", length=500)
-    public String elutionSolvent;
+    @Column(name = "REFERENCE_STANDARDS", length=4000)
+    public String referenceStandards;
 
-    @Column(name = "ELUTION_SOLVENT_CODE", length=100)
-    public String elutionSolventCode;
-
-    // Set PARENT Class, ImpuritiesTesting
-    @Indexable(indexed=false)
-    @ParentReference
-    @EqualsAndHashCode.Exclude
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "IMPURITIES_ID")
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="IMPURITIES_TEST_ID")
-    public ImpuritiesTesting owner;
+    private Impurities owner;
 
-    // Set PARENT Class, ImpuritiesTesting
-    public void setOwner(ImpuritiesTesting impuritiesTesting) {
-        this.owner = impuritiesTesting;
+    public void setOwner(Impurities owner) {
+        this.owner = owner;
     }
 
+    public Impurities getOwner() {
+        return this.owner;
+    }
 }

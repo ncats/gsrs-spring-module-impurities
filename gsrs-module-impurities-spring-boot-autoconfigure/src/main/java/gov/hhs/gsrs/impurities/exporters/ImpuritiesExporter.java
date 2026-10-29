@@ -29,7 +29,6 @@ enum ImpDefaultColumns implements Column {
     SUBMITTER_NAME,
     TOTAL_IMPURITIES_TEST_TYPE,
     TOTAL_IMPURITIES_LIMIT_VALUE,
-    TOTAL_IMPURITIES_AMOUNT_VALUE,
     TOTAL_IMPURITIES_LIMIT_TYPE,
     TOTAL_IMPURITIES_COMMENTS,
     APPROVAL_ID,
@@ -121,12 +120,6 @@ public class ImpuritiesExporter implements Exporter<Impurities> {
         DEFAULT_RECIPE_MAP.put(ImpDefaultColumns.TOTAL_IMPURITIES_LIMIT_VALUE, SingleColumnValueRecipe.create(ImpDefaultColumns.TOTAL_IMPURITIES_LIMIT_VALUE, (s, cell) -> {
             if (s.impuritiesTotal != null ) {
                 cell.writeString(s.impuritiesTotal.limitValue);
-            }
-        }));
-
-        DEFAULT_RECIPE_MAP.put(ImpDefaultColumns.TOTAL_IMPURITIES_AMOUNT_VALUE, SingleColumnValueRecipe.create(ImpDefaultColumns.TOTAL_IMPURITIES_AMOUNT_VALUE, (s, cell) -> {
-            if (s.impuritiesTotal != null ) {
-                cell.writeString(s.impuritiesTotal.amountValue);
             }
         }));
 

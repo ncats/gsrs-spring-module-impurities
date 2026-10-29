@@ -18,8 +18,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -49,23 +47,23 @@ public class Impurities extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Indexable(facet = true, name = "Source Type", sortable = true)
-    @Column(name = "SOURCE_TYPE", length=500)
-    public String sourceType;
-
-    @Indexable(facet = true, name = "Source", sortable = true)
+    @Indexable(suggest = true, facet = true, name = "Source", sortable = true)
     @Column(name = "SOURCE", length=500)
     public String source;
 
-    @Indexable(sortable = true)
+    @Indexable(suggest = true, facet = true, name = "Source Type", sortable = true)
+    @Column(name = "SOURCE_TYPE", length=500)
+    public String sourceType;
+
+    @Indexable(suggest = true, facet = true, name = "Source ID", sortable = true)
     @Column(name = "SOURCE_ID", length=500)
     public String sourceId;
 
-    @Indexable(sortable = true)
+    @Indexable(suggest = true, facet = true, name = "Type", sortable = true)
     @Column(name = "TYPE", length=500)
     public String type;
 
-    @Indexable(sortable = true)
+    @Indexable(suggest = true, facet = true, name = "Spec Type", sortable = true)
     @Column(name = "SPEC_TYPE", length=500)
     public String specType;
 
@@ -77,6 +75,7 @@ public class Impurities extends ImpuritiesCommonData {
     @Column(name = "COMPANY_NAME", length=500)
     public String submitterName;
 
+    @Indexable(facet = true, name = "Product Substance ID", sortable = true)
     @Column(name = "PRODUCT_ID", length=200)
     public String productId;
 
@@ -96,9 +95,9 @@ public class Impurities extends ImpuritiesCommonData {
         return "Not Deprecated";
     }
 
+    // One to Many IMPURITIES SUBSTANCE LISTS
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesSubstance> impuritiesSubstanceList = new ArrayList<ImpuritiesSubstance>();
 
     public void setImpuritiesSubstanceList(List<ImpuritiesSubstance> impuritiesSubstanceList) {
@@ -111,10 +110,23 @@ public class Impurities extends ImpuritiesCommonData {
         }
     }
 
+    // One to One Relationship to IMPURITIES TOTAL
     @Basic(fetch = FetchType.LAZY)
     @JoinColumn(name = "IMPURITIES_TOTAL_ID", referencedColumnName = "ID")
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public ImpuritiesTotal impuritiesTotal;
+
+    // One to One Relationship to IMPURITIES ADDITIONAL REQUIREMENTS
+    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ImpuritiesAdditionalRequirements impuritiesAdditionalRequirements;
+
+    // In Impurities class
+    public void setImpuritiesAdditionalRequirements(ImpuritiesAdditionalRequirements req) {
+        this.impuritiesAdditionalRequirements = req;
+        if (req != null) {
+            req.setOwner(this);
+        }
+    }
 
     public String getDateTypeDate() {
         //Convert Date to String, get from database

@@ -1,33 +1,13 @@
 package gov.hhs.gsrs.impurities.models;
 
-import gsrs.GsrsEntityProcessorListener;
-import gsrs.model.AbstractGsrsEntity;
-import gsrs.model.AbstractGsrsManualDirtyEntity;
 import ix.core.models.Indexable;
-import ix.core.models.IxModel;
 import ix.core.SingleParent;
 import ix.core.models.ParentReference;
-import ix.core.search.text.TextIndexerEntityListener;
-import ix.ginas.models.serialization.GsrsDateDeserializer;
-import ix.ginas.models.serialization.GsrsDateSerializer;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
-
-import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -43,9 +23,11 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
+    @Indexable(suggest = true, facet = true, name = "Test", sortable = true)
     @Column(name = "TEST", length=1000)
     public String test;
 
+    @Indexable(suggest = true, facet = true, name = "Test Type", sortable = true)
     @Column(name = "TEST_TYPE", length=150)
     public String testType;
 
@@ -67,6 +49,14 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "SOURCE_ID", length=500)
     public String sourceId;
 
+    @Column(name = "BUFFER", length=1000)
+    public String buffer;
+
+    @Indexable(suggest = true, facet = true, name = "Elution Type", sortable = true)
+    @Column(name = "ELUTION_TYPE", length=200)
+    public String elutionType;
+
+    @Indexable(suggest = true, facet = true, name = "System", sortable = true)
     @Column(name = "TEST_SYSTEM", length=150)
     public String system;
 
@@ -76,20 +66,35 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "DETECTION_TYPE", length=150)
     public String detectionType;
 
+    @Column(name = "DETECTOR_WAVELENGTH", length=100)
+    public String detectorWavelength;
+
     @Column(name = "DETECTION_DETAILS", length=500)
     public String detectionDetails;
-
-    @Column(name = "COLUMN_PACKING_TYPE", length=150)
-    public String columnPackingType;
-
-    @Column(name = "COLUMN_PACKING_SIZE", length=200)
-    public String columnPackingSize;
 
     @Column(name = "COLUMN_SIZE", length=200)
     public String columnSize;
 
+    @Column(name = "COLUMN_PACKING_SIZE", length=200)
+    public String columnPackingSize;
+
+    @Column(name = "COLUMN_PACKING_TYPE", length=150)
+    public String columnPackingType;
+
     @Column(name = "COLUMN_TEMPERATURE", length=200)
     public String columnTemperature;
+
+    @Column(name = "AUTOSAMPLER_TEMPERATURE", length=100)
+    public String autosamplerTemperature;
+
+    @Column(name = "COLUMN_STATIONARY_PHASE", length=100)
+    public String columnStationaryPhase;
+
+    @Column(name = "RUN_TIME", length=500)
+    public String runTime;
+
+    @Column(name = "INJECTION", length=500)
+    public String injection;
 
     @Column(name = "FLOW_RATE", length=200)
     public String flowRate;
@@ -100,28 +105,55 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
     @Column(name = "DILUENT", length=500)
     public String diluent;
 
+    @Column(name = "SYSTEM_SUITABILITY_SOLUTION", length=500)
+    public String systemSuitabilitySolution;
+
     @Column(name = "STANDARD_SOLUTION", length=500)
     public String standardSolution;
 
     @Column(name = "SAMPLE_SOLUTION", length=500)
     public String sampleSolution;
 
-    @Column(name = "SYSTEM_SUITABILITY_SOLUTION", length=500)
-    public String systemSuitabilitySolution;
+    @Column(name = "SENSITIVITY_SOLUTION", length=500)
+    public String sensitivitySolution;
 
     @Column(name = "OTHER_SOLUTION", length=2000)
     public String otherSolution;
 
-    // Suitability Requirements Resolution
+    // System Suitability SAMPLE
+    @Column(name = "SYSTEM_SUIT_SAMPLES", length=2000)
+    public String systemSuitabilitySample;
+
+    // System Suitability Requirements Resolution
     @Column(name = "SUITABILITY_REQ_RESOLUTION", length=500)
     public String suitabilityReqResolution;
 
-    // Suitability Requirements Relative Standard Deviation
+    // System Suitability Requirements Relative Standard Deviation
     @Column(name = "SUITABILITY_REQ_REL_STAND_DEV", length=200)
     public String suitabilityReqRelStandardDeviation;
 
-    @Column(name = "ELUTION_TYPE", length=200)
-    public String elutionType;
+    // System Suitability Requirements Trailing Factor
+    @Column(name = "SYSTEM_SUIT_REQ_TRAILING_FACTOR", length=2000)
+    public String systemSuitabilityReqTailingFactor;
+
+    // System Suitability Requirements Trailing Factor
+    @Column(name = "SYSTEM_SUIT_REQ_SIG_NOI_RATIO", length=2000)
+    public String systemSuitabilitySignalToNoiseRatio;
+
+    @Column(name = "SYSTEM_SUIT_REQ_PEAK_VALLEY_RATIO", length=2000)
+    public String systemSuitabilityReqPeakValleyRatio;
+
+    // System Suitability Stock Solution
+    @Column(name = "SYSTEM_SUIT_STOCK_SOLUTION", length=2000)
+    public String systemSuitabilityStockSolution;
+
+    // Standard Stock Solution
+    @Column(name = "STANDARD_STOCK_SOLUTION", length=2000)
+    public String standardStockSolution;
+
+    // Sample Stock Solution
+    @Column(name = "SAMPLE_STOCK_SOLUTION", length=2000)
+    public String sampleStockSolution;
 
     // Set PARENT Class, ImpuritiesSubstance
     @Indexable(indexed=false)
@@ -137,10 +169,10 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
         this.owner = impuritiesSubstance;
     }
 
+    /*
     // Set CHILDREN Class, ImpuritiesElutionSolvent
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesElutionSolvent> impuritiesElutionSolventList = new ArrayList<ImpuritiesElutionSolvent>();
 
     // Set CHILDREN Class, ImpuritiesElutionSolvent
@@ -153,12 +185,12 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
             }
         }
     }
+    */
 
     // Set CHILDREN Class, ImpuritiesSolution
     @ToString.Exclude
     @OrderBy("solution_letter asc")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesSolution> impuritiesSolutionList = new ArrayList<ImpuritiesSolution>();
 
     // Set CHILDREN Class, ImpuritiesSolution
@@ -174,8 +206,7 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
 
     // Set CHILDREN Class, ImpuritiesSolutionTable
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesSolutionTable> impuritiesSolutionTableList = new ArrayList<ImpuritiesSolutionTable>();
 
     // Set CHILDREN Class, ImpuritiesSolutionTable
@@ -189,10 +220,26 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
         }
     }
 
+    // Set CHILDREN Class, ImpuritiesAnalysis
+    @ToString.Exclude
+    //@LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<ImpuritiesAnalysis> impuritiesAnalysisList = new ArrayList<ImpuritiesAnalysis>();
+
+    // Set CHILDREN Class, ImpuritiesAnalysis
+    public void setImpuritiesAnalysisList(List<ImpuritiesAnalysis> impuritiesAnalysisList) {
+        this.impuritiesAnalysisList = impuritiesAnalysisList;
+        if (impuritiesAnalysisList != null) {
+            for (ImpuritiesAnalysis imp : impuritiesAnalysisList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
     // Set CHILDREN Class, ImpuritiesDetails
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesDetails> impuritiesDetailsList = new ArrayList<ImpuritiesDetails>();
 
     // Set CHILDREN Class, ImpuritiesDetails
@@ -208,8 +255,7 @@ public class ImpuritiesTesting extends ImpuritiesCommonData {
 
     // Set CHILDREN Class, ImpuritiesUnspecified
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesUnspecified> impuritiesUnspecifiedList = new ArrayList<ImpuritiesUnspecified>();
 
     // Set CHILDREN Class, ImpuritiesUnspecified
