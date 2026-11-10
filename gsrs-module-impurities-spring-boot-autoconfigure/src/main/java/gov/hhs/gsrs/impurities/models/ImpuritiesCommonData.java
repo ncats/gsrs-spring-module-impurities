@@ -1,46 +1,58 @@
 package gov.hhs.gsrs.impurities.models;
 
+// GSRS Imports
 import gsrs.model.AbstractGsrsEntity;
 import gsrs.security.GsrsSecurityUtils;
+import gsrs.ForceUpdateDirtyMakerMixin;
 import ix.core.models.Indexable;
 import ix.core.models.Principal;
 import ix.core.models.UserProfile;
-import gsrs.ForceUpdateDirtyMakerMixin;
 import ix.ginas.models.serialization.GsrsDateDeserializer;
 import ix.ginas.models.serialization.GsrsDateSerializer;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+//import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+//import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+// Jackson databind
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
+
+// Jakarta
 import jakarta.persistence.*;
+
+// lombok
+import lombok.extern.slf4j.Slf4j;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @MappedSuperclass
+@Slf4j
 public class ImpuritiesCommonData extends AbstractGsrsEntity implements ForceUpdateDirtyMakerMixin{
 
     @Indexable(facet = true, name = "Record Created By")
     @Column(name = "CREATED_BY")
     private String createdBy;
 
-    @Indexable(name = "Record Last Edited By")
+    @Indexable(facet = true, name = "Record Last Edited By")
     @Column(name = "MODIFIED_BY")
     private String modifiedBy;
 
     @JsonSerialize(using = GsrsDateSerializer.class)
     @JsonDeserialize(using = GsrsDateDeserializer.class)
     @CreatedDate
-    @Indexable( name = "Record Create Date", sortable=true)
+    @Indexable(facet = true, name = "Record Create Date", sortable=true)
     @Column(name = "CREATE_DATE")
     private Date creationDate;
 
     @JsonSerialize(using = GsrsDateSerializer.class)
     @JsonDeserialize(using = GsrsDateDeserializer.class)
     @LastModifiedDate
-    @Indexable( name = "Record Last Edited", sortable=true)
+    @Indexable(facet = true, name = "Record Last Edited", sortable=true)
     @Column(name = "MODIFY_DATE")
     private Date lastModifiedDate;
 

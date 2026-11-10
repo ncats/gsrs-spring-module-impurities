@@ -56,14 +56,14 @@ public class ImpuritiesTotal extends ImpuritiesCommonData {
     @Column(name = "TEST_TYPE", length=500)
     public String testType;
 
-    @Column(name = "LIMIT_VALUE", length=500)
-    public String limitValue;
-
     @Column(name = "LIMIT_TYPE", length=500)
     public String limitType;
 
-    @Column(name = "AMOUNT_VALUE", length=500)
-    public String amountValue;
+    @Column(name = "LIMIT_VALUE", length=500)
+    public String limitValue;
+
+    @Column(name = "UNIT", length=500)
+    public String unit;
 
     @Column(name = "COMMENTS", length=4000)
     public String comments;
