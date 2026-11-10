@@ -46,6 +46,8 @@ public class ImpuritiesAdditionalRequirements extends ImpuritiesCommonData {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IMPURITIES_ID")
     @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Impurities owner;
 
     public void setOwner(Impurities owner) {

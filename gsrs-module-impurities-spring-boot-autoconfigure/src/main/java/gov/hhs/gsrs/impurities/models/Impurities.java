@@ -97,6 +97,7 @@ public class Impurities extends ImpuritiesCommonData {
 
     // One to Many IMPURITIES SUBSTANCE LISTS
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesSubstance> impuritiesSubstanceList = new ArrayList<ImpuritiesSubstance>();
 
@@ -117,6 +118,8 @@ public class Impurities extends ImpuritiesCommonData {
     public ImpuritiesTotal impuritiesTotal;
 
     // One to One Relationship to IMPURITIES ADDITIONAL REQUIREMENTS
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ImpuritiesAdditionalRequirements impuritiesAdditionalRequirements;
 

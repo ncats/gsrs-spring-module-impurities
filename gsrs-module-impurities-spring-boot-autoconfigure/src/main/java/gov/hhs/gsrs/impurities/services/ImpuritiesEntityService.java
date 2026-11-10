@@ -141,7 +141,18 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
 
     @Override
     public Optional<Impurities> get(Long id) {
-        return repository.findById(id);
+        System.out.println("MMMMMMMMMMMMMMMMMMMMMMMMMMM" + id);
+        Optional<Impurities> imp = repository.findById(id);
+        System.out.println("AAAAAAAAA " + imp);
+        return imp;
+    }
+
+    //@Override
+    public Optional<Impurities> getEntityBySomeIdentifier(Long id) {
+        System.out.println("IN GETENTITY_SOME_IDENT" + id);
+        Optional<Impurities> imp = repository.findById(id);
+        System.out.println("BBBBBBBBBBBBBB " + imp);
+        return imp;
     }
 
     @Override

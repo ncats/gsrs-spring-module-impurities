@@ -12,6 +12,7 @@ import gsrs.autoconfigure.GsrsExportConfiguration;
 import gsrs.controller.*;
 import gsrs.repository.ETagRepository;
 import gsrs.repository.EditRepository;
+import gsrs.security.canApproveRecords;
 import gsrs.service.EtagExportGenerator;
 import gsrs.service.ExportService;
 import gsrs.service.GsrsEntityService;
@@ -190,6 +191,42 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
     }
     */
 
+    /*
+    @Override
+    @GetGsrsRestApiMapping(value = {"({id})", "/{id}"})
+    public ResponseEntity<Object> getById(@PathVariable("id") String id, @RequestParam Map<String, String> queryParameters) {
+        if (id == null) {
+            return gsrsControllerConfiguration.handleNotFound(queryParameters);
+        }
+
+        try {
+            Long idLong = Long.valueOf(id);
+            Optional<Impurities> obj = impuritiesEntityService.getEntityBySomeIdentifier(idLong);
+            if (obj.isPresent()) {
+                return new ResponseEntity<>(
+                        GsrsControllerUtil.enhanceWithView(obj.get(), queryParameters, this::addAdditionalLinks),
+                        HttpStatus.OK
+                );
+            }
+        } catch (NumberFormatException e) {
+            return gsrsControllerConfiguration.handleNotFound(queryParameters);
+        }
+
+        return gsrsControllerConfiguration.handleNotFound(queryParameters);
+    }
+    */
+
+    /*
+    @GetGsrsRestApiMapping(value = {"({id})", "/{id}"})
+    public ResponseEntity<Object> getById(@PathVariable String id, @RequestParam Map<String, String> queryParameters) {
+
+        System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQ " + id);
+
+        Optional<Impurities> imp = impuritiesEntityService.get(id);
+
+        return new ResponseEntity<>(savedVersion.getUpdatedEntity().toFullJsonNode(), HttpStatus.OK);
+    }
+    */
 
     @GetGsrsRestApiMapping("/subRelationship/{substanceUuid}")
     public ResponseEntity<String> findSubstanceRelationshipBySubstanceUuid(@PathVariable("substanceUuid") String substanceUuid) throws Exception {
