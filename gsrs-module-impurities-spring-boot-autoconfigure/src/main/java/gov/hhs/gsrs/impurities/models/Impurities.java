@@ -1,33 +1,10 @@
 package gov.hhs.gsrs.impurities.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import gsrs.BackupEntityProcessorListener;
-import gsrs.GsrsEntityProcessorListener;
-import gsrs.indexer.IndexerEntityListener;
-import gsrs.model.AbstractGsrsEntity;
-import gsrs.model.AbstractGsrsManualDirtyEntity;
-import gsrs.ForceUpdateDirtyMakerMixin;
-import gsrs.security.GsrsSecurityUtils;
 import ix.core.models.*;
-import ix.core.SingleParent;
-import ix.core.search.text.TextIndexerEntityListener;
-import ix.ginas.models.serialization.GsrsDateDeserializer;
-import ix.ginas.models.serialization.GsrsDateSerializer;
-
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

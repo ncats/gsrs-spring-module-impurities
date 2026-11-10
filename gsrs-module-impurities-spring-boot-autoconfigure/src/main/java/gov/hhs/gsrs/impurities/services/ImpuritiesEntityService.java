@@ -2,32 +2,19 @@ package gov.hhs.gsrs.impurities.services;
 
 import gov.hhs.gsrs.impurities.models.*;
 import gov.hhs.gsrs.impurities.repositories.ImpuritiesRepository;
-
 import gsrs.controller.IdHelpers;
 import gsrs.repository.GroupRepository;
 import gsrs.service.AbstractGsrsEntityService;
-import gsrs.module.substance.SubstanceEntityService;
 import gsrs.events.AbstractEntityCreatedEvent;
 import gsrs.events.AbstractEntityUpdatedEvent;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-// jackson databind
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
-
-//import com.fasterxml.jackson.databind.ObjectMapper;
-
-// jakarta
-import jakarta.persistence.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

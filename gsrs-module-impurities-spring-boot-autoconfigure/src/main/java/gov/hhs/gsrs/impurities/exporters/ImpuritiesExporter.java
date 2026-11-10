@@ -7,11 +7,8 @@ import ix.ginas.exporters.*;
 import ix.ginas.models.v1.Substance;
 import ix.core.EntityFetcher;
 import java.util.UUID;
-import gsrs.springUtils.AutowireHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import java.io.IOException;

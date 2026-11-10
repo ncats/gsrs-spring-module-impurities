@@ -12,10 +12,6 @@ import ix.ginas.models.serialization.GsrsDateSerializer;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
-//import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-//import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 // Jackson databind
 import tools.jackson.databind.annotation.JsonDeserialize;
 import tools.jackson.databind.annotation.JsonSerialize;
@@ -25,9 +21,6 @@ import jakarta.persistence.*;
 
 // lombok
 import lombok.extern.slf4j.Slf4j;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @MappedSuperclass
