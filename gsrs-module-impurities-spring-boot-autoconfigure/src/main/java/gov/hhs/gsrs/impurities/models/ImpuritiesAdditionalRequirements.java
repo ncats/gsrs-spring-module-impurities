@@ -19,7 +19,10 @@ public class ImpuritiesAdditionalRequirements extends ImpuritiesCommonData {
     @Column(name = "REFERENCE_STANDARDS", length=4000)
     public String referenceStandards;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    // @OneToOne(fetch = FetchType.LAZY)
+    // __aw__ experimental change to EAGER
+    @OneToOne(fetch = FetchType.EAGER)
+
     @JoinColumn(name = "IMPURITIES_ID")
     @JsonIgnore
     private Impurities owner;

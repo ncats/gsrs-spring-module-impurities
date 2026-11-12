@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.EntityManager;
+import org.springframework.transaction.annotation.Transactional;
 
 @ExposesResourceFor(Impurities.class)
 @GsrsRestApiController(context = ImpuritiesEntityService.CONTEXT, idHelper = IdHelpers.NUMBER)
@@ -109,6 +110,18 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
             }
         }
         return so;
+    }
+// __aw__ experimental addition of this block
+    @Override
+    @Transactional(
+            transactionManager = "impuritiesTransactionManager",
+            readOnly = true
+    )
+    public ResponseEntity<Object> getById(
+            String id,
+            Map<String, String> queryParameters) {
+
+        return super.getById(id, queryParameters);
     }
 
 

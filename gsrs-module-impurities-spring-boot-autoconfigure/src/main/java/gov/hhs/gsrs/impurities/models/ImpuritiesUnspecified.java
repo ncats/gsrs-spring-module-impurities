@@ -68,6 +68,8 @@ public class ImpuritiesUnspecified extends ImpuritiesCommonData {
 
     // Set CHILDREN Class, ImpuritiesIdentityCriteria
     @ToString.Exclude
+    // @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ownerDetails")
+    // __aw__ experimental change to EAGER
     @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<ImpuritiesIdentityCriteria> identityCriteriaList = new ArrayList<ImpuritiesIdentityCriteria>();
 

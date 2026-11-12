@@ -72,7 +72,7 @@ public class ImpuritiesDetails extends ImpuritiesCommonData {
     }
 
     @ToString.Exclude
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ownerDetails")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "ownerDetails")
     public List<ImpuritiesIdentityCriteria> identityCriteriaList = new ArrayList<ImpuritiesIdentityCriteria>();
 
     public void setIdentityCriteriaList(List<ImpuritiesIdentityCriteria> identityCriteriaList) {

@@ -88,13 +88,17 @@ public class Impurities extends ImpuritiesCommonData {
     }
 
     // One to One Relationship to IMPURITIES TOTAL
-    @Basic(fetch = FetchType.LAZY)
+//    @Basic(fetch = FetchType.LAZY)
+// __aw_experimental change to EAGER
+    @Basic(fetch = FetchType.EAGER)
     @JoinColumn(name = "IMPURITIES_TOTAL_ID", referencedColumnName = "ID")
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public ImpuritiesTotal impuritiesTotal;
 
     // One to One Relationship to IMPURITIES ADDITIONAL REQUIREMENTS
-    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //  @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // __aw_experimental change to EAGER
+    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private ImpuritiesAdditionalRequirements impuritiesAdditionalRequirements;
 
     // In Impurities class
