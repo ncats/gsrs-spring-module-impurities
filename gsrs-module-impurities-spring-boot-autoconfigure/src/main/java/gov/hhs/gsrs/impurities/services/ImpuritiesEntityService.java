@@ -23,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 
-//import com.fasterxml.jackson.databind.ObjectMapper;
-
 // jakarta
 import jakarta.persistence.*;
 
@@ -45,10 +43,6 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
 
     @Autowired
     private ImpuritiesRepository repository;
-
-    /*@Autowired
-    private ObjectMapper objectMapper;
-    */
 
     @Autowired
     @Qualifier("legacyJsonMapper")
@@ -141,17 +135,13 @@ public class ImpuritiesEntityService extends AbstractGsrsEntityService<Impuritie
 
     @Override
     public Optional<Impurities> get(Long id) {
-        System.out.println("MMMMMMMMMMMMMMMMMMMMMMMMMMM" + id);
         Optional<Impurities> imp = repository.findById(id);
-        System.out.println("AAAAAAAAA " + imp);
         return imp;
     }
 
     //@Override
     public Optional<Impurities> getEntityBySomeIdentifier(Long id) {
-        System.out.println("IN GETENTITY_SOME_IDENT" + id);
         Optional<Impurities> imp = repository.findById(id);
-        System.out.println("BBBBBBBBBBBBBB " + imp);
         return imp;
     }
 

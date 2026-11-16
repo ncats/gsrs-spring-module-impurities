@@ -41,13 +41,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-//import com.fasterxml.jackson.databind.JsonNode;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-
-// jackson databind
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.json.JsonMapper;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Principal;
@@ -97,12 +90,6 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
     @Autowired
     private GsrsFactoryConfiguration gsrsFactoryConfiguration;
 
-    //@Autowired
-    //private ObjectMapper objectMapper;
-
-   // @Autowired
-   // private JsonMapper mapper;
-
     @Override
     public GsrsEntityService<Impurities, Long> getEntityService() {
         return impuritiesEntityService;
@@ -141,93 +128,6 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
         return so;
     }
 
-
-    /*
-    @PreAuthorize("isAuthenticated()")
-   // @GetGsrsRestApiMapping("/export/{etagId}/{format}")
-    public ResponseEntity<Object> createExport(@PathVariable("etagId") String etagId,
-                                               @PathVariable("format") String format,
-                                               @RequestParam(value = "publicOnly", required = false) Boolean publicOnlyObj,
-                                               @RequestParam(value ="filename", required= false) String fileName,
-                                               Principal prof,
-                                               @RequestParam Map<String, String> parameters,
-                                               HttpServletRequest request
-
-    ) throws Exception {
-        Optional<ETag> etagObj = eTagRepository.findByEtag(etagId);
-
-        boolean publicOnly = publicOnlyObj==null? true: publicOnlyObj;
-
-        if (!etagObj.isPresent()) {
-            return new ResponseEntity<>("could not find etag with Id " + etagId,gsrsControllerConfiguration.getHttpStatusFor(HttpStatus.BAD_REQUEST, parameters));
-        }
-
-        ExportMetaData emd=new ExportMetaData(etagId, etagObj.get().uri, prof.getName(), publicOnly, format);
-
-        Stream<Impurities> mstream = new EtagExportGenerator<Impurities>(entityManager, transactionManager, HttpRequestHolder.fromRequest(request)).generateExportFrom(getEntityService().getContext(), etagObj.get()).get();
-
-        Stream<Impurities> effectivelyFinalStream = filterStream(mstream, publicOnly, parameters);
-
-        if(fileName!=null){
-            emd.setDisplayFilename(fileName);
-        }
-
-        ExportProcess<Impurities> p = exportService.createExport(emd,
-                () -> effectivelyFinalStream);
-
-        p.run(taskExecutor, out -> Unchecked.uncheck(() -> getExporterFor(format, out, publicOnly, parameters)));
-
-        return new ResponseEntity<>(GsrsControllerUtil.enhanceWithView(p.getMetaData(), parameters), HttpStatus.OK);
-    }
-
-    private Exporter<Impurities> getExporterFor(String extension, OutputStream pos, boolean publicOnly, Map<String, String> parameters) throws IOException {
-        ExporterFactory.Parameters params = this.createParameters(extension, publicOnly, parameters, JsonNodeFactory.instance.objectNode());
-        ExporterFactory<Impurities> factory = this.gsrsExportConfiguration.getExporterFor(this.getEntityService().getContext(), params);
-        if (factory == null) {
-            throw new IllegalArgumentException("could not find suitable factory for " + params);
-        } else {
-            return factory.createNewExporter(pos, params);
-        }
-    }
-    */
-
-    /*
-    @Override
-    @GetGsrsRestApiMapping(value = {"({id})", "/{id}"})
-    public ResponseEntity<Object> getById(@PathVariable("id") String id, @RequestParam Map<String, String> queryParameters) {
-        if (id == null) {
-            return gsrsControllerConfiguration.handleNotFound(queryParameters);
-        }
-
-        try {
-            Long idLong = Long.valueOf(id);
-            Optional<Impurities> obj = impuritiesEntityService.getEntityBySomeIdentifier(idLong);
-            if (obj.isPresent()) {
-                return new ResponseEntity<>(
-                        GsrsControllerUtil.enhanceWithView(obj.get(), queryParameters, this::addAdditionalLinks),
-                        HttpStatus.OK
-                );
-            }
-        } catch (NumberFormatException e) {
-            return gsrsControllerConfiguration.handleNotFound(queryParameters);
-        }
-
-        return gsrsControllerConfiguration.handleNotFound(queryParameters);
-    }
-    */
-
-    /*
-    @GetGsrsRestApiMapping(value = {"({id})", "/{id}"})
-    public ResponseEntity<Object> getById(@PathVariable String id, @RequestParam Map<String, String> queryParameters) {
-
-        System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQ " + id);
-
-        Optional<Impurities> imp = impuritiesEntityService.get(id);
-
-        return new ResponseEntity<>(savedVersion.getUpdatedEntity().toFullJsonNode(), HttpStatus.OK);
-    }
-    */
-
     @GetGsrsRestApiMapping("/subRelationship/{substanceUuid}")
     public ResponseEntity<String> findSubstanceRelationshipBySubstanceUuid(@PathVariable("substanceUuid") String substanceUuid) throws Exception {
         List<SubstanceRelationship> list = impuritiesEntityService.findSubstanceRelationshipBySubstanceUuid(substanceUuid);
@@ -244,63 +144,4 @@ public class ImpuritiesController extends EtagLegacySearchEntityController<Impur
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
-    /*
-    public JsonNode injectSubstanceBySubstanceUuid(String substanceUuid) {
-
-        JsonNode actualObj = null;
-        try {
-            if (substanceUuid != null) {
-
-                ResponseEntity<String> response = this.substanceModuleService.getSubstanceDetailsFromUUID(substanceUuid);
-
-                String jsonString = response.getBody();
-                if (jsonString != null) {
-                    //ObjectMapper mapper = new ObjectMapper();
-                    JsonMapper mapper = new JsonMapper();
-                    actualObj = mapper.readTree(jsonString);
-                }
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return actualObj;
-    }
-
-    public Optional<Impurities> injectSubstanceDetails(Optional<Impurities> impurities) {
-
-        try {
-            if (impurities.isPresent()) {
-
-                if (impurities.get().impuritiesSubstanceList.size() > 0) {
-                    for (int j = 0; j < impurities.get().impuritiesSubstanceList.size(); j++) {
-                        ImpuritiesSubstance impSub = impurities.get().impuritiesSubstanceList.get(j);
-                        if (impSub != null) {
-                            if (impSub.substanceUuid != null) {
-
-                                // ********* Get Substance Module/Details by Substance Code ***********
-                                // Using this for local Substance Module:  0017298AA
-                                // Use this for NCAT FDA URL API:   0126085AB
-                                ResponseEntity<String> response = this.substanceModuleService.getSubstanceDetailsFromSubstanceKey(impSub.substanceUuid);
-
-                                String jsonString = response.getBody();
-                                if (jsonString != null) {
-                                    ObjectMapper mapper = new ObjectMapper();
-                                    JsonNode actualObj = mapper.readTree(jsonString);
-
-                                 //   impSub._approvalID = actualObj.path("uuid").textValue();
-                                  //  impSub._approvalID = actualObj.path("approvalID").textValue();
-                                  //  impSub._name = actualObj.path("_name").textValue();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return impurities;
-    }
-    */
 }
