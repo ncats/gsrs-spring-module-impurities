@@ -42,11 +42,11 @@ public class ImpuritiesSubstance extends ImpuritiesCommonData {
     @Column(name = "ID")
     public Long id;
 
-    @Indexable
+    @Indexable(suggest = true, name = "Substance UUID")
     @Column(name = "SUBSTANCE_UUID", length=500)
     public String substanceUuid;
 
-    @Indexable
+    @Indexable(facet = true, name = "Ingredient Approval ID", sortable = true)
     @Column(name = "APPROVAL_ID", length=100)
     public String approvalID;
 
@@ -123,4 +123,22 @@ public class ImpuritiesSubstance extends ImpuritiesCommonData {
             }
         }
     }
+
+    // Set Children Class, ImpuritiesSpecificTest
+    @ToString.Exclude
+    //@LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<ImpuritiesSpecificTest> impuritiesSpecificTestList = new ArrayList<ImpuritiesSpecificTest>();
+
+    // Set Children Class, ImpuritiesSpecificTest
+    public void setImpuritiesSpecificTestList(List<ImpuritiesSpecificTest> impuritiesSpecificTestList) {
+        this.impuritiesSpecificTestList = impuritiesSpecificTestList;
+        if (impuritiesSpecificTestList != null) {
+            for (ImpuritiesSpecificTest imp : impuritiesSpecificTestList)
+            {
+                imp.setOwner(this);
+            }
+        }
+    }
+
 }
